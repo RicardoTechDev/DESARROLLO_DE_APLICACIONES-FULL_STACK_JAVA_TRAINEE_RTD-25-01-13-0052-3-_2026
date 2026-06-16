@@ -1,7 +1,7 @@
 <h1 align="center">
     <img src="java.png" alt="Java" width="220">
     <br>
-    🚀 Bootcamp Full Stack Java Trainee 0052-3 2026
+    🚀 Bootcamp Full Stack Java Trainee 0052-3
 </h1>
 
 <h3 align="center">
