@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>SpringEduManager</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+	crossorigin="anonymous">
+	
+	
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+	<!-- Barra de navegación -->
+	<nav class="navbar navbar-expand-lg bg-dark text-bg-dark mb-4"
+	     data-bs-theme="dark">
+	
+	    <div class="container">
+	        <!-- Nombre del sistema -->
+	        <a class="navbar-brand"
+	           th:href="@{/}">
+	            Sistema de gestión académica
+	        </a>
+	
+	        <!-- Botón hamburguesa para pantallas pequeñas -->
+	        <button class="navbar-toggler"
+	                type="button"
+	                data-bs-toggle="collapse"
+	                data-bs-target="#navbarPrincipal"
+	                aria-controls="navbarPrincipal"
+	                aria-expanded="false"
+	                aria-label="Abrir navegación">
+	            <span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="collapse navbar-collapse" id="navbarPrincipal">
+	            <!-- Navegación -->
+	            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	                <li class="nav-item">
+	                    <a class="nav-link"
+	                       th:href="@{/}">
+	                        Inicio
+	                    </a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link"
+	                       th:href="@{/estudiantes}">
+	                        Estudiantes
+	                    </a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link"
+	                       th:href="@{/cursos}">
+	                        Cursos
+	                    </a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link"
+	                       th:href="@{/evaluaciones}">
+	                        Evaluaciones
+	                    </a>
+	                </li>
+	            </ul>
+	
+	            <!-- Usuario -->
+	            <div class="d-flex align-items-center">
+	                <span class="me-3">
+	                    Hola,
+	                    <strong>
+	                        <!-- Aquí agregaremos luego el nombre del usuario -->
+	                    </strong>
+	                </span>
+	
+	                <!-- Cerrar sesión -->
+	                <a class="text-info"
+	                   th:href="@{/logout}"
+	                   title="Cerrar sesión">
+	                    <i class="fa-solid fa-right-from-bracket"></i>
+	                </a>
+	            </div>
+	        </div>
+	    </div>
+	</nav>
+	
+	<div class="container">
+		<div class="d-flex justify-content-center">
+		<table class="table table-dark table-striped">
+		  <thead>
+		    <tr>
+		      <th scope="col">ID</th>
+		      <th scope="col">Nombre Estudiante</th>
+		      <th scope="col">Correo</th>
+		      <th scope="col">Opciones</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+	     		<tr th:each="estudiante : ${ listaEstudiantes }">
+	     			<td th:text="${ estudiante.id }"></td>
+	     			<td th:text="${ estudiante.nombre }"></td>
+	     			<td th:text="${ estudiante.email }"></td>
+	     			<td>
+	     				 <i class="fa-solid fa-pen-to-square text-warning"></i>
+	     				 <i class="fa-solid fa-trash text-danger"></i>
+	     			</td>
+	     		</tr>
+	     </tbody>
+		</table>
+
+			
+		</div>
+	</div>
+	
+	
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+		crossorigin="anonymous"></script>
+	
+</body>
+</html>

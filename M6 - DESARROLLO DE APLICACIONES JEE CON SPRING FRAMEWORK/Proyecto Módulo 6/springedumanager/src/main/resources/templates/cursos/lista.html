@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/base :: layout(
+            'Cursos',
+            ~{::contenido}
+      )}">
+
+<!-- 
+Esto se puede leer así:
+
+Usa layout/base.html, busca el fragmento layout, 
+envíale como título "Cursos" y como contenido 
+el fragmento contenido de esta página.
+
+ -->      
+      
+      
+<head>
+<meta charset="UTF-8">
+<title>SpringEduManager</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+	crossorigin="anonymous">
+
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+	<!--
+        Este es el contenido que será
+        insertado dentro de base.html
+    -->
+	<div th:fragment="contenido">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<div>
+				<h1>Cursos</h1>
+				<p class="text-muted">Gestión de cursos registrados en el
+					sistema.</p>
+			</div>
+			<a class="btn btn-success"> <i class="fa-solid fa-plus"></i>
+				Nuevo curso
+			</a>
+		</div>
+		<div class="card shadow-sm">
+			<div class="card-body">
+				<table class="table table-dark table-striped table-hover">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Nombre Estudiante</th>
+							<th scope="col">Correo</th>
+							<th scope="col">Opciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="curso : ${ listaCursos }">
+							<td th:text="${ curso.id }"></td>
+							<td th:text="${ curso.nombre }"></td>
+							<td th:text="${ curso.descripcion }"></td>
+							<td><i class="fa-solid fa-pen-to-square text-warning"></i> <i
+								class="fa-solid fa-trash text-danger"></i></td>
+						</tr>
+					</tbody>
+				</table>
+
+
+			</div>
+		</div>
+	</div>
+
+			<script
+				src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+				integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+				crossorigin="anonymous"></script>
+</body>
+</html>
