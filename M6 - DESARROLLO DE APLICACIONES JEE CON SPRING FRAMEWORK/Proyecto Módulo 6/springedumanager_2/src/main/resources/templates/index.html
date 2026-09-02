@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/base :: layout(
+            'Home',
+            ~{::contenido},
+            ~{}
+      )}">
+
+<!-- 
+Esto se puede leer así:
+
+Usa layout/base.html, busca el fragmento layout, 
+envíale como título "Home" y como contenido 
+el fragmento contenido de esta página.
+
+ -->      
+
+<!--
+       Este es el contenido que será
+       insertado dentro de base.html
+   -->
+<div th:fragment="contenido">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<div>
+			<h1>Home</h1>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/base :: layout(
+            'Estudiantes',
+            ~{::contenido},
+            ~{}
+      )}">
+
+<!-- 
+Esto se puede leer así:
+
+Usa layout/base.html, busca el fragmento layout, 
+envíale como título "Home" y como contenido 
+el fragmento contenido de esta página.
+
+ -->
+
+<!--
+    Esta vista utiliza el layout base.
+
+    layout/base.html contiene:
+    - navbar
+    - footer
+    - Bootstrap
+    - Font Awesome
+
+    Esta página solamente entrega
+    el contenido particular de Estudiantes.
+-->
+
+<!--
+       Este es el contenido que será
+       insertado dentro de base.html
+   -->
+ 
+<body>
+
+
+<div th:fragment="contenido">
+
+
+    <!-- ================================================= -->
+    <!-- ENCABEZADO                                        -->
+    <!-- ================================================= -->
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-5">
+
+
+        <div>
+
+            <h1>
+                Estudiantes
+            </h1>
+
+
+            <p class="text-muted">
+
+                Gestión de estudiantes
+                registrados en el sistema.
+
+            </p>
+
+        </div>
+
+
+        <!--
+            Este botón NO navega a otra página.
+
+            Bootstrap abre el modal cuyo ID es:
+
+            #modalEstudiante
+
+            Además ejecutamos nuevoEstudiante()
+            para limpiar el formulario.
+        -->
+        <button
+            type="button"
+
+            class="btn btn-success"
+
+            data-bs-toggle="modal"
+            data-bs-target="#modalEstudiante"
+
+            onclick="nuevoEstudiante()">
+
+
+            <i class="fa-solid fa-plus"></i>
+
+            Nuevo Estudiante
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- TABLA DE ESTUDIANTES                              -->
+    <!-- ================================================= -->
+
+    <div class="card shadow-sm">
+
+
+        <div class="card-body">
+
+
+            <table
+                class="table table-dark
+                       table-striped
+                       table-hover
+                       align-middle mb-0">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Nombre Estudiante</th>
+
+                        <th>Correo</th>
+
+                        <th>Opciones</th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    <!--
+                        th:each funciona como un for-each.
+
+                        Spring envía:
+
+                        listaEstudiantes
+
+                        desde el Controller mediante:
+
+                        model.addAttribute(
+                            "listaEstudiantes",
+                            listaEstudiantes
+                        );
+                    -->
+                    <tr
+                        th:each="estudiante : ${listaEstudiantes}">
+
+
+                        <!-- ID -->
+                        <td
+                            th:text="${estudiante.id}">
+                        </td>
+
+
+                        <!-- Nombre -->
+                        <td
+                            th:text="${estudiante.nombre}">
+                        </td>
+
+
+                        <!-- Correo -->
+                        <td
+                            th:text="${estudiante.email}">
+                        </td>
+
+
+                        <!-- OPCIONES -->
+                        <td>
+
+
+                            <!-- ================================= -->
+                            <!-- EDITAR                            -->
+                            <!-- ================================= -->
+
+                            <!--
+                                Guardamos información del estudiante
+                                dentro del propio botón utilizando
+                                atributos HTML data-*.
+
+                                Ejemplo generado:
+
+                                data-id="2"
+                                data-nombre="Juan Pérez"
+                                data-email="juan@correo.cl"
+
+                                JavaScript podrá leerlos mediante:
+
+                                boton.dataset.id
+                                boton.dataset.nombre
+                                boton.dataset.email
+                            -->
+                            <button
+                                type="button"
+
+                                class="btn btn-link
+                                       text-warning
+                                       p-0 me-2"
+
+                                title="Editar"
+
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEstudiante"
+
+                                th:data-id="${estudiante.id}"
+                                th:data-nombre="${estudiante.nombre}"
+                                th:data-email="${estudiante.email}"
+
+                                onclick="editarEstudiante(this)">
+
+
+                                <i class="fa-solid fa-pen-to-square"></i>
+
+
+                            </button>
+
+
+
+                            <!-- ================================= -->
+                            <!-- ELIMINAR                          -->
+                            <!-- ================================= -->
+
+                            <!--
+                                Por ahora utilizamos POST.
+
+                                El ID se incorpora en la URL.
+
+                                Ejemplo:
+
+                                POST
+                                /estudiantes/eliminar/3
+                            -->
+                            <form
+                                th:action="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}"
+
+                                method="post"
+
+                                class="d-inline form-eliminar">
+
+
+                                <button
+                                    type="submit"
+
+                                    class="btn btn-link
+                                           text-danger p-0"
+
+                                    title="Eliminar">
+
+
+                                    <i class="fa-solid fa-trash"></i>
+
+
+                                </button>
+
+
+                            </form>
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- MODAL NUEVO / EDITAR ESTUDIANTE                   -->
+    <!-- ================================================= -->
+
+    <div
+        class="modal fade"
+
+        id="modalEstudiante"
+
+        tabindex="-1"
+
+        aria-labelledby="tituloModalEstudiante"
+
+        aria-hidden="true">
+
+
+        <div class="modal-dialog">
+
+
+            <div class="modal-content">
+
+
+                <!-- ========================================= -->
+                <!-- CABECERA DEL MODAL                        -->
+                <!-- ========================================= -->
+
+                <div class="modal-header">
+
+
+                    <h5
+                        class="modal-title"
+
+                        id="tituloModalEstudiante">
+
+                        Nuevo Estudiante
+
+                    </h5>
+
+
+                    <button
+                        type="button"
+
+                        class="btn-close"
+
+                        data-bs-dismiss="modal"
+
+                        aria-label="Cerrar">
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- ========================================= -->
+                <!-- FORMULARIO                                -->
+                <!-- ========================================= -->
+
+                <!--
+                    El formulario SIEMPRE realiza POST hacia:
+
+                    /estudiantes/guardar
+
+                    El Controller decidirá:
+
+                    id == 0
+                    → CREATE
+
+                    id != 0
+                    → UPDATE
+                -->
+                <form
+                    th:action="@{/estudiantes/guardar}"
+
+                    method="post">
+
+
+                    <div class="modal-body">
+
+
+                        <!-- ================================= -->
+                        <!-- ID OCULTO                         -->
+                        <!-- ================================= -->
+
+                        <!--
+                            Este campo es fundamental.
+
+                            Para estudiante NUEVO:
+
+                            id = 0
+
+
+                            Para EDITAR:
+
+                            id = ID existente
+
+
+                            Como id en Java es int,
+                            utilizamos 0 para representar
+                            un objeto que todavía no tiene ID.
+                        -->
+                        <input
+                            type="hidden"
+
+                            id="idEstudiante"
+
+                            name="id"
+
+                            value="0">
+
+
+
+                        <!-- ================================= -->
+                        <!-- NOMBRE                            -->
+                        <!-- ================================= -->
+
+                        <div class="mb-3">
+
+
+                            <label
+                                for="nombreEstudiante"
+
+                                class="form-label">
+
+                                Nombre Estudiante
+
+                            </label>
+
+
+                            <!--
+                                name="nombre"
+
+                                debe coincidir con la propiedad:
+
+                                private String nombre;
+
+                                de Estudiante.java.
+                            -->
+                            <input
+                                type="text"
+
+                                id="nombreEstudiante"
+
+                                name="nombre"
+
+                                class="form-control">
+
+
+                        </div>
+
+
+
+                        <!-- ================================= -->
+                        <!-- CORREO                            -->
+                        <!-- ================================= -->
+
+                        <div class="mb-3">
+
+
+                            <label
+                                for="emailEstudiante"
+
+                                class="form-label">
+
+                                Correo
+
+                            </label>
+
+
+                            <!--
+                                name="email"
+
+                                debe coincidir con:
+
+                                private String email;
+                            -->
+                            <input
+                                type="email"
+
+                                id="emailEstudiante"
+
+                                name="email"
+
+                                class="form-control">
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- ===================================== -->
+                    <!-- PIE DEL MODAL                         -->
+                    <!-- ===================================== -->
+
+                    <div class="modal-footer">
+
+
+                        <button
+                            type="button"
+
+                            class="btn btn-secondary"
+
+                            data-bs-dismiss="modal">
+
+                            Cancelar
+
+                        </button>
+
+
+
+                        <button
+                            type="submit"
+
+                            class="btn btn-primary">
+
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Guardar
+
+
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- JAVASCRIPT                                        -->
+    <!-- ================================================= -->
+
+    <script>
+
+
+        /*
+         * Obtenemos referencias a los elementos
+         * del modal para reutilizarlos en
+         * Nuevo y Editar.
+         */
+
+        const idEstudiante =
+            document.getElementById(
+                'idEstudiante'
+            );
+
+
+        const nombreEstudiante =
+            document.getElementById(
+                'nombreEstudiante'
+            );
+
+
+        const emailEstudiante =
+            document.getElementById(
+                'emailEstudiante'
+            );
+
+
+        const tituloModalEstudiante =
+            document.getElementById(
+                'tituloModalEstudiante'
+            );
+
+
+
+        /*
+         * =================================================
+         * NUEVO ESTUDIANTE
+         * =================================================
+         *
+         * Se ejecuta cuando presionamos:
+         *
+         * + Nuevo Estudiante
+         */
+        function nuevoEstudiante() {
+
+
+            /*
+             * Cambiamos el título del modal.
+             */
+            tituloModalEstudiante.textContent =
+                'Nuevo Estudiante';
+
+
+
+            /*
+             * IMPORTANTE:
+             *
+             * Como id es int,
+             * utilizamos 0 para indicar
+             * que todavía no existe ID.
+             */
+            idEstudiante.value = 0;
+
+
+
+            /*
+             * Limpiamos los campos.
+             */
+            nombreEstudiante.value = '';
+
+            emailEstudiante.value = '';
+
+        }
+
+
+
+        /*
+         * =================================================
+         * EDITAR ESTUDIANTE
+         * =================================================
+         *
+         * Esta función recibe como parámetro
+         * el botón que fue presionado.
+         */
+        function editarEstudiante(
+                boton) {
+
+
+            /*
+             * Recuperamos los atributos data-*
+             * almacenados en el botón.
+             */
+            const id =
+                boton.dataset.id;
+
+
+            const nombre =
+                boton.dataset.nombre;
+
+
+            const email =
+                boton.dataset.email;
+
+
+
+            /*
+             * Cambiamos el título del modal.
+             */
+            tituloModalEstudiante.textContent =
+                'Editar Estudiante';
+
+
+
+            /*
+             * Guardamos el ID existente.
+             *
+             * Ejemplo:
+             *
+             * id = 2
+             *
+             * Cuando enviemos el formulario,
+             * el Controller sabrá que debe
+             * actualizar y no crear.
+             */
+            idEstudiante.value =
+                id;
+
+
+
+            /*
+             * Rellenamos los campos
+             * con la información actual.
+             */
+            nombreEstudiante.value =
+                nombre;
+
+
+            emailEstudiante.value =
+                email;
+
+        }
+
+
+    </script>
+
+
+</div>
+
+
+</body>
+
+</html>
