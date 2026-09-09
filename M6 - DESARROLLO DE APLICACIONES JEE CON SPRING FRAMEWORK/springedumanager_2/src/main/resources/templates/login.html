@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>SpringEduManager</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+	crossorigin="anonymous">
+	
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+      
+</head>
+<body>
+		<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				
+			<!-- Tarjeta o card -->
+				<div class="card shadow">
+					<div class="card-body p-5">
+					
+						<h2 class="text-center mb-2">Sistema SpringEduManager</h2>
+						<p class="mb-4 text-center text-muted">Iniciar Sesión</p>
+						
+											
+						<!-- Formulario  -->
+						<form action="" method="POST">
+							<div class="mb-3">
+								<label class="form-lable">Correo</label> 
+								<input 
+								type="email" 
+								class="form-control" 
+								name="correo" 
+								placeholder="correo@SpringEduManager.cl" 
+								>
+							</div>
+							
+							<div class="mb-3">
+
+							    <label for="password" class="form-label">
+							        Contraseña
+							    </label>
+							
+							    <div class="input-group">
+							
+							        <input
+							            type="password"
+							            class="form-control"
+							            id="password"
+							            name="password"
+							            >
+							
+							        <button
+							            class="btn btn-outline-secondary"
+							            type="button"
+							            id="btnMostrarPassword">
+							
+							            <i
+							                class="bi bi-eye"
+							                id="iconoPassword">
+							            </i>
+							
+							        </button>
+							
+							    </div>
+							
+							</div>
+		
+							
+							
+						
+							<button type="submit" class="btn btn-primary w-100">Ingresar</button>
+		
+						</form>
+						
+						<div class="mt-4">
+						Usuario de prueba: admin@springedumanager.cl <br>
+						Contraseña: 1234
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>	
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+		crossorigin="anonymous"></script>
+		
+		
+	<script>
+
+    // Recuperamos el input de contraseña
+    const password = document.getElementById("password");
+
+    // Recuperamos el botón del ojo
+    const btnMostrarPassword = document.getElementById("btnMostrarPassword");
+
+    // Recuperamos el ícono
+    const iconoPassword = document.getElementById("iconoPassword");
+
+
+    // Escuchamos el clic sobre el botón
+    btnMostrarPassword.addEventListener("click", function () {
+        // Preguntamos si actualmente
+        // el input es de tipo password
+        if (password.type === "password") {
+
+            // Cambiamos a text para mostrar
+            // la contraseña
+            password.type = "text";
+
+            // Cambiamos el ícono
+            password.classList.remove("bi-eye");
+            password.classList.add("bi-eye-slash");
+
+        } else {
+
+            // Volvemos a ocultar la contraseña
+            password.type = "password";
+
+            // Volvemos al ícono original
+            iconoPassword.classList.remove("bi-eye-slash");
+            iconoPassword.classList.add("bi-eye");
+
+        }
+
+    });
+
+</script>
+</body>
+</html>

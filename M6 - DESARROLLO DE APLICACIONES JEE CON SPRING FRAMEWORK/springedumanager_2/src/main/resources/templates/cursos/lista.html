@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+
+      th:replace="~{layout/base :: layout(
+            'Cursos',
+            ~{::contenido},
+            ~{}
+      )}">
+
+
+<body>
+
+
+<div th:fragment="contenido">
+
+
+    <!-- ================================================= -->
+    <!-- ENCABEZADO                                        -->
+    <!-- ================================================= -->
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-5">
+
+
+        <div>
+
+
+            <h1>
+                Cursos
+            </h1>
+
+
+            <p class="text-muted">
+
+                Gestión de cursos
+                registrados en el sistema.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!--
+            Este botón abre el modal.
+
+            No navega a otra página.
+        -->
+        <button
+            type="button"
+
+            class="btn btn-success"
+
+            data-bs-toggle="modal"
+            data-bs-target="#modalCurso"
+
+            onclick="nuevoCurso()">
+
+
+            <i class="fa-solid fa-plus"></i>
+
+            Nuevo Curso
+
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- TABLA DE CURSOS                                   -->
+    <!-- ================================================= -->
+
+    <div class="card shadow-sm">
+
+
+        <div class="card-body">
+
+
+            <table
+                class="table table-dark
+                       table-striped
+                       table-hover
+                       align-middle mb-0">
+
+
+                <thead>
+
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Nombre Curso</th>
+
+                        <th>Descripción</th>
+
+                        <th>Opciones</th>
+
+                    </tr>
+
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    <!--
+                        th:each recorre la lista que
+                        recibimos desde el Controller:
+
+                        listaCursos
+                    -->
+                    <tr
+                        th:each="curso : ${listaCursos}">
+
+
+                        <!-- ID -->
+                        <td
+                            th:text="${curso.id}">
+                        </td>
+
+
+                        <!-- Nombre -->
+                        <td
+                            th:text="${curso.nombre}">
+                        </td>
+
+
+                        <!-- Descripción -->
+                        <td
+                            th:text="${curso.descripcion}">
+                        </td>
+
+
+                        <!-- OPCIONES -->
+                        <td>
+
+
+
+                            <!-- ================================= -->
+                            <!-- EDITAR                            -->
+                            <!-- ================================= -->
+
+                            <!--
+                                Guardamos los datos del curso
+                                dentro del botón mediante
+                                atributos data-*.
+
+                                Thymeleaf generará algo como:
+
+                                data-id="2"
+                                data-nombre="Python"
+                                data-descripcion="Bootcamp..."
+                            -->
+                            <button
+                                type="button"
+
+                                class="btn btn-link
+                                       text-warning
+                                       p-0 me-2"
+
+                                title="Editar"
+
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalCurso"
+
+                                th:data-id="${curso.id}"
+
+                                th:data-nombre="${curso.nombre}"
+
+                                th:data-descripcion="${curso.descripcion}"
+
+                                onclick="editarCurso(this)">
+
+
+                                <i class="fa-solid fa-pen-to-square"></i>
+
+
+                            </button>
+
+
+
+                            <!-- ================================= -->
+                            <!-- ELIMINAR                          -->
+                            <!-- ================================= -->
+
+                            <!--
+                                Por ahora usamos POST.
+
+                                Ejemplo:
+
+                                POST /cursos/eliminar/2
+                            -->
+                            <form
+                                th:action="@{/cursos/eliminar/{id}(id=${curso.id})}"
+
+                                method="post"
+
+                                class="d-inline form-eliminar">
+
+
+                                <button
+                                    type="submit"
+
+                                    class="btn btn-link
+                                           text-danger p-0"
+
+                                    title="Eliminar">
+
+
+                                    <i class="fa-solid fa-trash"></i>
+
+
+                                </button>
+
+
+                            </form>
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- MODAL NUEVO / EDITAR CURSO                        -->
+    <!-- ================================================= -->
+
+    <div
+        class="modal fade"
+
+        id="modalCurso"
+
+        tabindex="-1"
+
+        aria-labelledby="tituloModalCurso"
+
+        aria-hidden="true">
+
+
+        <div class="modal-dialog">
+
+
+            <div class="modal-content">
+
+
+
+                <!-- ========================================= -->
+                <!-- CABECERA                                  -->
+                <!-- ========================================= -->
+
+                <div class="modal-header">
+
+
+                    <h5
+                        class="modal-title"
+
+                        id="tituloModalCurso">
+
+                        Nuevo Curso
+
+                    </h5>
+
+
+                    <button
+                        type="button"
+
+                        class="btn-close"
+
+                        data-bs-dismiss="modal"
+
+                        aria-label="Cerrar">
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- ========================================= -->
+                <!-- FORMULARIO                                -->
+                <!-- ========================================= -->
+
+                <!--
+                    El formulario SIEMPRE hace:
+
+                    POST /cursos/guardar
+
+                    El Controller decide:
+
+                    id == 0
+                    → CREATE
+
+                    id != 0
+                    → UPDATE
+                -->
+                <form
+                    th:action="@{/cursos/guardar}"
+
+                    method="post">
+
+
+
+                    <div class="modal-body">
+
+
+
+                        <!-- ================================= -->
+                        <!-- ID OCULTO                         -->
+                        <!-- ================================= -->
+
+                        <!--
+                            Curso nuevo:
+                            id = 0
+
+                            Curso editado:
+                            id = ID existente
+                        -->
+                        <input
+                            type="hidden"
+
+                            id="idCurso"
+
+                            name="id"
+
+                            value="0">
+
+
+
+                        <!-- ================================= -->
+                        <!-- NOMBRE                            -->
+                        <!-- ================================= -->
+
+                        <div class="mb-3">
+
+
+                            <label
+                                for="nombreCurso"
+
+                                class="form-label">
+
+                                Nombre Curso
+
+                            </label>
+
+
+                            <!--
+                                name="nombre"
+
+                                debe coincidir con:
+
+                                private String nombre;
+
+                                de Curso.java.
+                            -->
+                            <input
+                                type="text"
+
+                                id="nombreCurso"
+
+                                name="nombre"
+
+                                class="form-control">
+
+
+                        </div>
+
+
+
+                        <!-- ================================= -->
+                        <!-- DESCRIPCIÓN                       -->
+                        <!-- ================================= -->
+
+                        <div class="mb-3">
+
+
+                            <label
+                                for="descripcionCurso"
+
+                                class="form-label">
+
+                                Descripción
+
+                            </label>
+
+
+                            <!--
+                                name="descripcion"
+
+                                debe coincidir con:
+
+                                private String descripcion;
+                            -->
+                            <textarea
+                                id="descripcionCurso"
+
+                                name="descripcion"
+
+                                class="form-control"
+
+                                rows="4">
+                            </textarea>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- ===================================== -->
+                    <!-- PIE DEL MODAL                         -->
+                    <!-- ===================================== -->
+
+                    <div class="modal-footer">
+
+
+                        <button
+                            type="button"
+
+                            class="btn btn-secondary"
+
+                            data-bs-dismiss="modal">
+
+                            Cancelar
+
+                        </button>
+
+
+
+                        <button
+                            type="submit"
+
+                            class="btn btn-primary">
+
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Guardar
+
+
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- JAVASCRIPT                                        -->
+    <!-- ================================================= -->
+
+    <script>
+
+
+        /*
+         * Guardamos referencias a los elementos
+         * que necesitamos modificar dentro
+         * del modal.
+         */
+
+        const idCurso =
+            document.getElementById(
+                'idCurso'
+            );
+
+
+        const nombreCurso =
+            document.getElementById(
+                'nombreCurso'
+            );
+
+
+        const descripcionCurso =
+            document.getElementById(
+                'descripcionCurso'
+            );
+
+
+        const tituloModalCurso =
+            document.getElementById(
+                'tituloModalCurso'
+            );
+
+
+
+        /*
+         * =================================================
+         * NUEVO CURSO
+         * =================================================
+         *
+         * Se ejecuta cuando presionamos:
+         *
+         * + Nuevo Curso
+         */
+        function nuevoCurso() {
+
+
+            /*
+             * Cambiamos el título.
+             */
+            tituloModalCurso.textContent =
+                'Nuevo Curso';
+
+
+
+            /*
+             * id = 0 significa que
+             * estamos creando un curso.
+             */
+            idCurso.value = 0;
+
+
+
+            /*
+             * Limpiamos los campos.
+             */
+            nombreCurso.value = '';
+
+            descripcionCurso.value = '';
+
+        }
+
+
+
+        /*
+         * =================================================
+         * EDITAR CURSO
+         * =================================================
+         *
+         * Recibimos el botón que fue presionado.
+         */
+        function editarCurso(
+                boton) {
+
+
+            /*
+             * Recuperamos los atributos data-*
+             * almacenados en el botón.
+             */
+            const id =
+                boton.dataset.id;
+
+
+            const nombre =
+                boton.dataset.nombre;
+
+
+            const descripcion =
+                boton.dataset.descripcion;
+
+
+
+            /*
+             * Cambiamos el título del modal.
+             */
+            tituloModalCurso.textContent =
+                'Editar Curso';
+
+
+
+            /*
+             * Guardamos el ID original.
+             *
+             * Esto hará que el Controller
+             * identifique un UPDATE.
+             */
+            idCurso.value =
+                id;
+
+
+
+            /*
+             * Rellenamos los campos
+             * con los datos actuales.
+             */
+            nombreCurso.value =
+                nombre;
+
+
+            descripcionCurso.value =
+                descripcion;
+
+        }
+
+
+    </script>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+
+      th:replace="~{layout/base :: layout(
+    'Evaluaciones',
+    ~{::contenido},
+    ~{::scripts}
+)}">
+<body>
+<div th:fragment="contenido">
+    <!-- ================================================= -->
+    <!-- ENCABEZADO                                        -->
+    <!-- ================================================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1>
+                Evaluaciones
+            </h1>
+            <p class="text-muted">
+                Gestión de evaluaciones
+                registradas en el sistema.
+            </p>
+        </div>
+        <!--
+            Este botón abre el modal.
+            No navega a otra página.
+        -->
+        <button
+            type="button"
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#modalEvaluacion"
+            onclick="nuevaEvaluacion()">
+
+            <i class="fa-solid fa-plus"></i>
+            Nueva Evaluación
+        </button>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- TABLA DE EVALUACIONES                             -->
+    <!-- ================================================= -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table
+                class="table table-dark
+                       table-striped
+                       table-hover
+                       align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Evaluación</th>
+                        <th>Estudiante</th>
+                        <th>Curso</th>
+                        <th>Nota</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--
+                        Recorremos:
+                        listaEvaluaciones
+                        enviada desde el Controller.
+                    -->
+                    <tr th:each="evaluacion : ${listaEvaluaciones}">
+                        <td th:text="${evaluacion.id}"></td>
+                        <td th:text="${evaluacion.nombre}"></td>
+                        <td th:text="${evaluacion.estudiante}"></td>
+                        <td th:text="${evaluacion.curso}"></td>
+                        <td th:text="${evaluacion.nota}"></td>
+                        <!-- OPCIONES -->
+                        <td>
+                            <!-- EDITAR -->
+                            <button
+                                type="button"
+                                class="btn btn-link text-warning p-0 me-2"
+                                title="Editar"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEvaluacion"
+                                th:data-id="${evaluacion.id}"
+                                th:data-nombre="${evaluacion.nombre}"
+                                th:data-estudiante="${evaluacion.estudiante}"
+                                th:data-curso="${evaluacion.curso}"
+                                th:data-nota="${evaluacion.nota}"
+                                onclick="editarEvaluacion(this)">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <!-- ELIMINAR -->
+                            <form
+                                th:action="@{/evaluaciones/eliminar/{id}(id=${evaluacion.id})}"
+                                method="post"
+                                class="d-inline form-eliminar">
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-link text-danger p-0"
+                                    title="Eliminar">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- MODAL NUEVA / EDITAR EVALUACIÓN                   -->
+    <!-- ================================================= -->
+    <div
+        class="modal fade"
+        id="modalEvaluacion"
+        tabindex="-1"
+        aria-labelledby="tituloModalEvaluacion"
+        aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalEvaluacion">
+                        Nueva Evaluación
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                    </button>
+                </div>
+
+                <!-- ========================================= -->
+                <!-- FORMULARIO                                -->
+                <!-- ========================================= -->
+
+                <!--
+                    Siempre enviamos:
+
+                    POST /evaluaciones/guardar
+
+                    El Controller revisará el ID:
+
+                    id == 0
+                    → CREATE
+
+                    id != 0
+                    → UPDATE
+                -->
+                <form th:action="@{/evaluaciones/guardar}" method="post">
+                    <div class="modal-body">
+                        <!-- ID OCULTO -->
+                        <input
+                            type="hidden"
+                            id="idEvaluacion"
+                            name="id"
+                            value="0">
+
+                        <div class="mb-3">
+                            <label
+                                for="nombreEvaluacion"
+                                class="form-label">
+                                Nombre Evaluación
+                            </label>
+
+                            <!--
+                                name="nombre"
+                                coincide con:
+                                private String nombre;
+                            -->
+                            <input
+                                type="text"
+                                id="nombreEvaluacion"
+                                name="nombre"
+                                class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label
+                                for="estudianteEvaluacion"
+                                class="form-label">
+                                Estudiante
+                            </label>
+                            <input
+                                type="text"
+                                id="estudianteEvaluacion"
+                                name="estudiante"
+                                class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label
+                                for="cursoEvaluacion"
+                                class="form-label">
+                                Curso
+                            </label>
+                            <input
+                                type="text"
+                                id="cursoEvaluacion"
+                                name="curso"
+                                class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label
+                                for="notaEvaluacion"
+                                class="form-label">
+                                Nota
+                            </label>
+                            <!--
+                                type="number"
+                                permite trabajar con números.
+
+                                step="0.1"
+                                permite decimales como:
+
+                                5.5
+                                6.2
+                                4.8
+                            -->
+                            <input
+                                type="number"
+                                step="0.1"
+                                id="notaEvaluacion"
+                                name="nota"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- ================================================= -->
+    <!-- SCRIPTS DE ESTA PÁGINA                            -->
+    <!-- ================================================= -->
+</div>
+    <th:block th:fragment="scripts">
+
+
+        <!--
+            Este JavaScript solamente será
+            cargado cuando se muestre
+            la vista de Evaluaciones.
+        -->
+        <script th:src="@{/js/evaluaciones/evaluaciones.js}">
+        </script>
+
+
+    </th:block>
+
+
+</body>
+
+</html>

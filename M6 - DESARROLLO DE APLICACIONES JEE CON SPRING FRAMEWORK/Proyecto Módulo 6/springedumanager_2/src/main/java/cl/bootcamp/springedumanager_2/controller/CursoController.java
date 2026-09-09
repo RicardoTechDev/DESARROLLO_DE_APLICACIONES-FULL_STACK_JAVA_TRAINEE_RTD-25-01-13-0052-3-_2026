@@ -1,10 +1,6 @@
 package cl.bootcamp.springedumanager_2.controller;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -14,30 +10,53 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+import cl.bootcamp.springedumanager_2.exception.ReglaNegocioException;
 import cl.bootcamp.springedumanager_2.model.Curso;
+import cl.bootcamp.springedumanager_2.service.CursoService;
 
 
 
 /*
  * @Controller
  *
- * Le indica a Spring que esta clase
- * pertenece a la capa Controller.
+ * Indica que esta clase pertenece
+ * a la capa Controller de Spring MVC.
  *
- * Se encargará de recibir solicitudes HTTP
- * relacionadas con los cursos.
+ * Su responsabilidad principal será:
+ *
+ * - recibir solicitudes HTTP;
+ * - comunicarse con CursoService;
+ * - enviar información hacia Thymeleaf;
+ * - redireccionar al usuario;
+ * - mostrar mensajes de éxito o error.
+ *
+ *
+ * IMPORTANTE:
+ *
+ * El Controller ya NO se encargará
+ * directamente de acceder a la base de datos.
+ *
+ * La comunicación será:
+ *
+ * Controller
+ *      ↓
+ * Service
+ *      ↓
+ * Repository
+ *      ↓
+ * MySQL
  */
 @Controller
 
 
 /*
- * @RequestMapping
+ * Ruta base del Controller.
  *
- * Define una ruta base para todas
- * las operaciones de este Controller.
- *
- * Todas comenzarán con:
+ * Todas las rutas de esta clase
+ * comenzarán con:
  *
  * /cursos
  */
@@ -48,67 +67,56 @@ public class CursoController {
 
 
     /*
-     * Lista temporal donde almacenamos
-     * los cursos.
+     * =====================================================
+     * SERVICE
+     * =====================================================
      *
-     * Todavía NO utilizamos una base de datos.
+     * En la Clase 1 teníamos:
      *
-     * Los datos solamente existirán mientras
-     * la aplicación esté ejecutándose.
+     * private final List<Curso> listaCursos;
+     *
+     * y:
+     *
+     * private int siguienteId;
+     *
+     *
+     * Ahora ya NO necesitamos ninguno
+     * de esos elementos.
+     *
+     * Los datos serán administrados
+     * mediante CursoService.
      */
-    private final List<Curso> listaCursos =
-            new ArrayList<>();
+    private final CursoService cursoService;
 
 
 
     /*
-     * Variable que utilizaremos para
-     * simular un ID autoincremental.
+     * =====================================================
+     * INYECCIÓN DE DEPENDENCIAS
+     * =====================================================
      *
-     * En la Clase 2 MySQL será quien
-     * genere los ID.
+     * Spring detectará CursoService
+     * porque tiene la anotación:
+     *
+     * @Service
+     *
+     * y lo entregará automáticamente
+     * al constructor.
+     *
+     * Esto se conoce como:
+     *
+     * Inyección de Dependencias.
      */
-    private int siguienteId = 1;
+    public CursoController(
+            CursoService cursoService) {
 
 
-
-    /*
-     * Constructor.
-     *
-     * Se ejecuta cuando Spring crea
-     * CursoController.
-     *
-     * Agregamos algunos cursos iniciales
-     * para tener información en pantalla.
-     */
-    public CursoController() {
-
-
-        listaCursos.add(
-            new Curso(
-                siguienteId++,
-                "Java",
-                "Bootcamp Full Stack Java"
-            )
-        );
-
-
-        listaCursos.add(
-            new Curso(
-                siguienteId++,
-                "Python",
-                "Bootcamp Full Stack Python"
-            )
-        );
-
-
-        listaCursos.add(
-            new Curso(
-                siguienteId++,
-                "PHP",
-                "Bootcamp Full Stack PHP"
-            )
-        );
+        /*
+         * Guardamos la instancia
+         * recibida desde Spring.
+         */
+        this.cursoService =
+                cursoService;
 
     }
 
@@ -122,14 +130,20 @@ public class CursoController {
      * GET /cursos
      *
      * GET /cursos/
+     *
+     * Ambas rutas redireccionan hacia:
+     *
+     * /cursos/listar
      */
     @GetMapping({"", "/"})
     public String irListar() {
 
 
         /*
-         * redirect indica que el navegador
-         * debe realizar una nueva petición.
+         * redirect:
+         *
+         * indica al navegador que debe
+         * realizar una nueva solicitud.
          *
          * En este caso:
          *
@@ -143,7 +157,7 @@ public class CursoController {
 
     /*
      * =====================================================
-     * READ - LISTAR
+     * READ - LISTAR CURSOS
      * =====================================================
      *
      * GET /cursos/listar
@@ -154,27 +168,48 @@ public class CursoController {
 
 
         /*
-         * Model permite enviar información
-         * desde el Controller hacia Thymeleaf.
+         * CLASE 1:
          *
-         * Antes con Servlets hacíamos:
-         *
-         * request.setAttribute(
+         * model.addAttribute(
          *     "listaCursos",
          *     listaCursos
          * );
+         *
+         *
+         * CLASE 2:
+         *
+         * Ya no obtenemos los datos
+         * desde un ArrayList.
+         *
+         * Solicitamos los datos
+         * a CursoService.
          */
         model.addAttribute(
+
                 "listaCursos",
-                listaCursos
+
+                cursoService.listar()
+
         );
 
 
         /*
-         * Spring buscará:
+         * CursoService.listar()
          *
-         * src/main/resources/
-         * templates/cursos/lista.html
+         * internamente realizará:
+         *
+         * cursoRepository.findAll()
+         *
+         * y Spring Data JPA recuperará
+         * los registros desde MySQL.
+         */
+
+
+        /*
+         * Spring + Thymeleaf buscarán:
+         *
+         * src/main/resources/templates/
+         * cursos/lista.html
          */
         return "cursos/lista";
 
@@ -189,131 +224,216 @@ public class CursoController {
      *
      * POST /cursos/guardar
      *
-     * El mismo método nos servirá
-     * tanto para crear como actualizar.
+     * Seguimos utilizando el mismo
+     * formulario/modal de la Clase 1.
+     *
+     *
+     * Nuevo curso:
+     *
+     * id = 0
+     *
+     *
+     * Editar curso:
+     *
+     * id = ID existente
+     *
+     *
+     * La diferencia es que ahora
+     * CursoService y JPA se encargarán
+     * de guardar los datos.
      */
     @PostMapping("/guardar")
     public String guardar(
 
             /*
-             * @ModelAttribute recibe los campos
-             * enviados por el formulario y
-             * construye automáticamente
-             * un objeto Curso.
+             * @ModelAttribute
              *
-             * Por ejemplo:
+             * toma automáticamente los
+             * campos enviados por el formulario:
              *
-             * id=0
-             * nombre=Spring Boot
-             * descripcion=Curso de Spring Boot
+             * id
+             * nombre
+             * descripcion
              *
-             * se transforma en un objeto Curso.
+             * y construye un objeto Curso.
              */
             @ModelAttribute
-            Curso curso) {
-
-
-
-        /*
-         * =================================================
-         * CREATE
-         * =================================================
-         *
-         * Como id es int, su valor por defecto
-         * en un objeto nuevo es 0.
-         */
-        if (curso.getId() == 0) {
+            Curso curso,
 
 
             /*
-             * Asignamos un nuevo ID.
+             * RedirectAttributes permite
+             * enviar información después
+             * de un redirect.
+             *
+             * Lo utilizaremos para enviar
+             * mensajes hacia SweetAlert2.
              */
-            curso.setId(
-                    siguienteId++
-            );
+            RedirectAttributes
+            redirectAttributes) {
+
+
+        try {
 
 
             /*
-             * Agregamos el curso
-             * al ArrayList.
+             * Antes de guardar debemos recordar
+             * si se trata de un registro nuevo.
+             *
+             * Esto es importante porque después
+             * de ejecutar save(), JPA asignará
+             * automáticamente el nuevo ID.
+             *
+             *
+             * Ejemplo:
+             *
+             * antes:
+             *
+             * id = 0
+             *
+             * después de guardar:
+             *
+             * id = 4
              */
-            listaCursos.add(
+            boolean nuevo =
+                    curso.getId() == 0;
+
+
+
+            /*
+             * En la Clase 1 hacíamos:
+             *
+             * if (curso.getId() == 0) {
+             *
+             *     curso.setId(siguienteId++);
+             *     listaCursos.add(curso);
+             *
+             * } else {
+             *
+             *     // recorrer ArrayList
+             *     // y reemplazar objeto
+             *
+             * }
+             *
+             *
+             * Ahora toda esa lógica desaparece.
+             *
+             * Simplemente llamamos al Service.
+             */
+            cursoService.guardar(
                     curso
             );
 
-        }
-
-
-        /*
-         * =================================================
-         * UPDATE
-         * =================================================
-         *
-         * Si id es distinto de 0,
-         * significa que estamos editando
-         * un curso existente.
-         */
-        else {
 
 
             /*
-             * Recorremos la lista utilizando
-             * el índice i.
+             * =================================================
+             * MENSAJE DE ÉXITO
+             * =================================================
              *
-             * Necesitamos conocer la posición
-             * porque vamos a reemplazar
-             * el objeto existente.
+             * Estos atributos estarán disponibles
+             * después del redirect.
+             *
+             * Nuestro layout base utilizará:
+             *
+             * tipoMensaje
+             * mensaje
+             *
+             * para mostrar SweetAlert2.
              */
-            for (int i = 0;
-                 i < listaCursos.size();
-                 i++) {
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "tipoMensaje",
+
+                    "success"
+
+                );
 
 
-                Curso cursoActual =
-                        listaCursos.get(i);
+
+            /*
+             * Personalizamos el mensaje
+             * dependiendo de si fue:
+             *
+             * CREATE
+             *
+             * o
+             *
+             * UPDATE
+             */
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "mensaje",
+
+                    nuevo
+
+                    ? "Curso registrado correctamente."
+
+                    : "Curso actualizado correctamente."
+
+                );
+
+        }
+
+
+        /*
+         * =====================================================
+         * ERROR DE REGLA DE NEGOCIO
+         * =====================================================
+         *
+         * CursoService puede lanzar esta excepción
+         * cuando detecta una operación inválida.
+         *
+         * Ejemplos:
+         *
+         * - nombre vacío;
+         *
+         * - curso duplicado;
+         *
+         * - intento de usar el nombre
+         *   de otro curso.
+         */
+        catch (ReglaNegocioException e) {
+
+
+            /*
+             * Indicamos a SweetAlert2
+             * que debe mostrar un error.
+             */
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "tipoMensaje",
+
+                    "error"
+
+                );
 
 
 
-                /*
-                 * Buscamos el curso cuyo ID
-                 * coincida con el recibido
-                 * desde el formulario.
-                 *
-                 * Como id es int utilizamos ==.
-                 */
-                if (cursoActual.getId()
-                        == curso.getId()) {
+            /*
+             * Recuperamos exactamente
+             * el mensaje generado
+             * desde la capa Service.
+             */
+            redirectAttributes
+                .addFlashAttribute(
 
+                    "mensaje",
 
-                    /*
-                     * Reemplazamos el objeto
-                     * anterior por el actualizado.
-                     */
-                    listaCursos.set(
-                            i,
-                            curso
-                    );
+                    e.getMessage()
 
-
-                    /*
-                     * Ya encontramos el curso.
-                     *
-                     * No necesitamos seguir
-                     * recorriendo la lista.
-                     */
-                    break;
-
-                }
-
-            }
+                );
 
         }
 
 
 
         /*
-         * Después de crear o actualizar
-         * volvemos al listado.
+         * Después de guardar
+         * regresamos al listado.
          */
         return "redirect:/cursos/listar";
 
@@ -328,18 +448,23 @@ public class CursoController {
      *
      * POST /cursos/eliminar/2
      *
-     * Por ahora utilizamos POST porque estamos
-     * trabajando con formularios HTML.
+     * Por ahora seguimos utilizando POST
+     * porque todavía estamos trabajando
+     * con formularios HTML tradicionales.
      *
-     * Más adelante podremos evolucionarlo
-     * utilizando fetch() y DELETE.
+     * En una iteración posterior,
+     * utilizando fetch() y REST,
+     * evolucionaremos a:
+     *
+     * DELETE /api/cursos/2
      */
     @PostMapping("/eliminar/{id}")
     public String eliminar(
 
             /*
-             * @PathVariable obtiene el ID
-             * directamente desde la URL.
+             * @PathVariable
+             *
+             * captura el ID desde la URL.
              *
              * Ejemplo:
              *
@@ -348,29 +473,110 @@ public class CursoController {
              * id = 2
              */
             @PathVariable
-            int id) {
+            int id,
+
+
+            /*
+             * Permitirá enviar mensajes
+             * después del redirect.
+             */
+            RedirectAttributes
+            redirectAttributes) {
+
+
+        try {
+
+
+            /*
+             * Ya NO hacemos:
+             *
+             * listaCursos.removeIf(...)
+             *
+             *
+             * Ahora:
+             *
+             * Controller
+             *      ↓
+             * Service
+             *      ↓
+             * Repository
+             *      ↓
+             * MySQL
+             */
+            cursoService.eliminar(
+                    id
+            );
+
+
+
+            /*
+             * Mensaje exitoso.
+             */
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "tipoMensaje",
+
+                    "success"
+
+                );
+
+
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "mensaje",
+
+                    "Curso eliminado correctamente."
+
+                );
+
+        }
+
 
 
         /*
-         * removeIf elimina todos los objetos
-         * que cumplan la condición.
+         * El Service puede impedir
+         * la eliminación.
          *
-         * En este caso:
+         * Más adelante, cuando tengamos
+         * Inscripcion y Evaluacion,
+         * podremos tener reglas como:
          *
-         * curso.getId() == id
+         * "No se puede eliminar el curso
+         * porque tiene estudiantes inscritos."
+         *
+         * o:
+         *
+         * "No se puede eliminar el curso
+         * porque tiene evaluaciones registradas."
          */
-        listaCursos.removeIf(
-
-            curso ->
-                curso.getId() == id
-
-        );
+        catch (ReglaNegocioException e) {
 
 
-        /*
-         * Después de eliminar
-         * volvemos al listado.
-         */
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "tipoMensaje",
+
+                    "error"
+
+                );
+
+
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "mensaje",
+
+                    e.getMessage()
+
+                );
+
+        }
+
+
+
         return "redirect:/cursos/listar";
 
     }

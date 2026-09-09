@@ -38,7 +38,6 @@ estructura HTML
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
 </head>
 
 
@@ -156,7 +155,121 @@ estructura HTML
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
+    <!-- SweetAlert2 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script
+	    th:if="${mensaje != null}"
+	    th:inline="javascript">
+	
+	
+	    /*
+	     * Recuperamos los FlashAttributes
+	     * enviados desde el Controller.
+	     */
+	
+	    const tipoMensaje =
+	        /*[[${tipoMensaje}]]*/
+	        'info';
+	
+	
+	    const mensaje =
+	        /*[[${mensaje}]]*/
+	        '';
+	
+	
+	    Swal.fire({
+	
+	        icon: tipoMensaje,
+	
+	        title:
+	            tipoMensaje === 'success'
+	
+	            ? 'Operación realizada'
+	
+	            : 'Atención',
+	
+	        text: mensaje,
+	
+	        confirmButtonText:
+	            'Aceptar'
+	
+	    });
+	
+	
+	</script>
+	<script>
 
+	    /*
+	     * Buscamos todos los formularios
+	     * utilizados para eliminar registros.
+	     */
+	    document
+	        .querySelectorAll(
+	            '.form-eliminar'
+	        )
+	        .forEach(formulario => {
+	
+	
+	            formulario.addEventListener(
+	
+	                'submit',
+	
+	                function(event) {
+	
+	
+	                    /*
+	                     * Detenemos temporalmente
+	                     * el envío.
+	                     */
+	                    event.preventDefault();
+	
+	
+	
+	                    Swal.fire({
+	
+	                        title:
+	                            '¿Está seguro?',
+	
+	                        text:
+	                            'Esta operación puede no ser reversible.',
+	
+	                        icon:
+	                            'warning',
+	
+	                        showCancelButton:
+	                            true,
+	
+	                        confirmButtonText:
+	                            'Sí, eliminar',
+	
+	                        cancelButtonText:
+	                            'Cancelar'
+	
+	                    })
+	                    .then(resultado => {
+	
+	
+	                        if (resultado.isConfirmed) {
+	
+	
+	                            /*
+	                             * Ahora enviamos
+	                             * realmente el formulario.
+	                             */
+	                            formulario.submit();
+	
+	                        }
+	
+	                    });
+	
+	                }
+	
+	            );
+	
+	        });
+	
+	
+	</script>
 
     <!-- ================================================= -->
     <!-- SCRIPTS ESPECÍFICOS DE CADA VISTA                 -->

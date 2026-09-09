@@ -11,67 +11,29 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cl.bootcamp.springedumanager_2.exception.ReglaNegocioException;
 import cl.bootcamp.springedumanager_2.model.Estudiante;
+import cl.bootcamp.springedumanager_2.service.EstudianteService;
 
 
 @Controller
 @RequestMapping("/estudiantes")
 public class EstudianteController {
-
-
-    /*
-     * Lista temporal que funciona como
-     * nuestra fuente de datos.
+	/*
+     * Ya no trabajamos con ArrayList.
      *
-     * Todavía NO utilizamos base de datos.
+     * Controller
+     *      ↓
+     * Service
      */
-    private final List<Estudiante> listaEstudiantes =
-            new ArrayList<>();
-
-
-    /*
-     * Simulamos temporalmente
-     * un ID autoincremental.
-     */
-    private int siguienteId = 1;
-
-
-    /*
-     * Constructor.
-     *
-     * Cargamos algunos estudiantes
-     * para visualizar información
-     * al iniciar la aplicación.
-     */
-    public EstudianteController() {
-
-
-        listaEstudiantes.add(
-            new Estudiante(
-                siguienteId++,
-                "Roberto Goméz",
-                "robertog@correo.cl"
-            )
-        );
-
-
-        listaEstudiantes.add(
-            new Estudiante(
-                siguienteId++,
-                "Juan Pérez",
-                "juan@correo.cl"
-            )
-        );
-
-
-        listaEstudiantes.add(
-            new Estudiante(
-                siguienteId++,
-                "Ana Salazár",
-                "ana@correo.cl"
-            )
-        );
+	private final EstudianteService estudianteService;
+    
+	//Constructor
+    public EstudianteController(EstudianteService estudianteService) {
+    		this.estudianteService = estudianteService;
+    
     }
 
 
@@ -98,20 +60,16 @@ public class EstudianteController {
      * GET /estudiantes/listar
      */
     @GetMapping("/listar")
-    public String listar(
-            Model model) {
-
-
+    public String listar(Model model) {
         /*
-         * Enviamos la lista hacia Thymeleaf.
+         * Enviamos la data hacia Thymeleaf.
          *
          * Conceptualmente es parecido a:
          *
          * request.setAttribute(...)
          */
         model.addAttribute(
-                "listaEstudiantes",
-                listaEstudiantes
+                "listaEstudiantes", estudianteService.listar()
         );
 
 
@@ -133,96 +91,34 @@ public class EstudianteController {
      *
      * Este método sirve tanto para crear
      * como para actualizar.
+*/
+    /*
+     * =====================================================
+     * GUARDAR
+     * =====================================================
      */
     @PostMapping("/guardar")
-    public String guardar(
-
-            /*
-             * @ModelAttribute toma los campos
-             * enviados por el formulario y
-             * construye un objeto Estudiante.
-             */
-            @ModelAttribute
-            Estudiante estudiante) {
-
-
-        /*
-         * CREATE
-         *
-         * Como id es int, cuando un objeto
-         * nuevo no tiene ID su valor es 0.
-         */
-        if (estudiante.getId() == 0) {
-
-
-            /*
-             * Asignamos un nuevo ID.
-             */
-            estudiante.setId(
-                    siguienteId++
-            );
-
-
-            /*
-             * Agregamos el estudiante
-             * a nuestra lista temporal.
-             */
-            listaEstudiantes.add(
-                    estudiante
-            );
+    public String guardar(@ModelAttribute Estudiante estudiante, RedirectAttributes redirectAttributes) {
+        try {
+            estudianteService.guardar(estudiante);
+            
+            redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+            
+            String msg = estudiante.getId() == 0
+                    ? "Estudiante registrado correctamente."
+                    : "Estudiante actualizado correctamente.";
+            
+            redirectAttributes.addFlashAttribute("mensaje", msg);
 
         }
-
-
-        /*
-         * UPDATE
-         *
-         * Si el ID es distinto de 0,
-         * significa que el estudiante
-         * ya existe.
-         */
-        else {
-
-
-            for (int i = 0;
-                 i < listaEstudiantes.size();
-                 i++) {
-
-
-                Estudiante actual =
-                        listaEstudiantes.get(i);
-
-
-                /*
-                 * Buscamos el registro
-                 * que tenga el mismo ID.
-                 */
-                if (actual.getId()
-                        == estudiante.getId()) {
-
-
-                    /*
-                     * Reemplazamos el objeto
-                     * antiguo por el actualizado.
-                     */
-                    listaEstudiantes.set(
-                            i,
-                            estudiante
-                    );
-
-
-                    break;
-                }
-            }
+        catch (ReglaNegocioException e) {
+            redirectAttributes.addFlashAttribute("tipoMensaje", "error");
+            redirectAttributes.addFlashAttribute("mensaje",e.getMessage());
         }
 
-
-        /*
-         * Después de guardar o actualizar
-         * realizamos una nueva petición GET.
-         */
         return "redirect:/estudiantes/listar";
     }
+
 
 
     /*
@@ -237,28 +133,7 @@ public class EstudianteController {
      * POST porque trabajamos con formularios HTML.
      */
     @PostMapping("/eliminar/{id}")
-    public String eliminar(
-
-            /*
-             * @PathVariable obtiene el ID
-             * desde la URL.
-             */
-            @PathVariable
-            int id) {
-
-
-        /*
-         * removeIf elimina todos los elementos
-         * que cumplan la condición indicada.
-         */
-        listaEstudiantes.removeIf(
-
-            estudiante ->
-                estudiante.getId() == id
-
-        );
-
-
+    public String eliminar() {
         return "redirect:/estudiantes/listar";
     }
 

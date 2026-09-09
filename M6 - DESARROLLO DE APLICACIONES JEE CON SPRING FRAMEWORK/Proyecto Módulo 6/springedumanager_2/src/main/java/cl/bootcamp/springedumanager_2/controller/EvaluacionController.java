@@ -1,80 +1,187 @@
 package cl.bootcamp.springedumanager_2.controller;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
-import cl.bootcamp.springedumanager_2.model.Evaluacion;
+import cl.bootcamp.springedumanager_2.exception.ReglaNegocioException;
+import cl.bootcamp.springedumanager_2.service.CursoService;
+import cl.bootcamp.springedumanager_2.service.EvaluacionService;
+
+
 
 /*
+ * =========================================================
+ * EVALUACION CONTROLLER
+ * =========================================================
+ *
  * @Controller
  *
- * Indica que esta clase atenderá
- * solicitudes HTTP relacionadas
- * con evaluaciones.
+ * Indica que esta clase pertenece
+ * a la capa Controller de Spring MVC.
+ *
+ *
+ * Su responsabilidad será:
+ *
+ * - recibir solicitudes HTTP;
+ *
+ * - recibir datos desde los formularios;
+ *
+ * - comunicarse con EvaluacionService;
+ *
+ * - solicitar los cursos a CursoService;
+ *
+ * - enviar información hacia Thymeleaf;
+ *
+ * - redireccionar;
+ *
+ * - enviar mensajes de éxito o error
+ *   hacia SweetAlert2.
+ *
+ *
+ * IMPORTANTE:
+ *
+ * El Controller ya NO contiene:
+ *
+ * ArrayList
+ *
+ * siguienteId
+ *
+ * ni lógica para recorrer listas.
+ *
+ *
+ * La nueva arquitectura será:
+ *
+ * EvaluacionController
+ *          ↓
+ * EvaluacionService
+ *          ↓
+ * EvaluacionRepository
+ *          ↓
+ * JPA / Hibernate
+ *          ↓
+ * MySQL
  */
 @Controller
 
 
 /*
- * Todas las rutas de este Controller
- * comenzarán con:
+ * Todas las rutas manejadas
+ * por este Controller comenzarán con:
  *
  * /evaluaciones
  */
 @RequestMapping("/evaluaciones")
 
 public class EvaluacionController {
-    private final List<Evaluacion> listaEvaluaciones =
-            new ArrayList<>();
-
-    private int siguienteId = 1;
-
-    public EvaluacionController() {
-        listaEvaluaciones.add(
-            new Evaluacion(
-                siguienteId++,
-                "Prueba Java",
-                "Roberto Gómez",
-                "Java",
-                6.2
-            )
-        );
 
 
-        listaEvaluaciones.add(
-            new Evaluacion(
-                siguienteId++,
-                "Proyecto Python",
-                "Juan Pérez",
-                "Python",
-                5.8
-            )
-        );
+
+    /*
+     * =====================================================
+     * SERVICES
+     * =====================================================
+     */
 
 
-        listaEvaluaciones.add(
-            new Evaluacion(
-                siguienteId++,
-                "Evaluación PHP",
-                "Ana Salazár",
-                "PHP",
-                6.5
-            )
-        );
+
+    /*
+     * EvaluacionService
+     *
+     * Contiene las reglas de negocio
+     * relacionadas con las evaluaciones.
+     *
+     * Por ejemplo:
+     *
+     * - validar nombre;
+     *
+     * - validar ponderación;
+     *
+     * - comprobar curso;
+     *
+     * - evitar evaluaciones duplicadas;
+     *
+     * - impedir que las ponderaciones
+     *   superen el 100%;
+     *
+     * - eliminar evaluaciones.
+     */
+    private final EvaluacionService
+            evaluacionService;
+
+
+
+    /*
+     * CursoService
+     *
+     * Lo necesitamos porque en el formulario
+     * de evaluación tendremos un:
+     *
+     * <select>
+     *
+     * con todos los cursos disponibles.
+     *
+     *
+     * Ejemplo:
+     *
+     * Curso:
+     *
+     * [ Java        ▼ ]
+     * [ Python        ]
+     * [ Spring Boot   ]
+     */
+    private final CursoService
+            cursoService;
+
+
+
+    /*
+     * =====================================================
+     * INYECCIÓN DE DEPENDENCIAS
+     * =====================================================
+     *
+     * Spring detectará automáticamente:
+     *
+     * EvaluacionService
+     *
+     * y
+     *
+     * CursoService
+     *
+     * porque están marcados con:
+     *
+     * @Service
+     *
+     *
+     * Luego los entregará al constructor.
+     */
+    public EvaluacionController(
+
+            EvaluacionService
+            evaluacionService,
+
+            CursoService
+            cursoService) {
+
+
+        this.evaluacionService =
+                evaluacionService;
+
+
+        this.cursoService =
+                cursoService;
 
     }
+
 
 
     /*
@@ -85,48 +192,110 @@ public class EvaluacionController {
      * GET /evaluaciones
      *
      * GET /evaluaciones/
+     *
+     *
+     * Ambas rutas redireccionarán hacia:
+     *
+     * GET /evaluaciones/listar
      */
     @GetMapping({"", "/"})
     public String irListar() {
 
-        /*
-         * Redireccionamos hacia:
-         *
-         * GET /evaluaciones/listar
-         */
+
         return "redirect:/evaluaciones/listar";
+
     }
+
 
 
     /*
      * =====================================================
-     * READ - LISTAR
+     * READ - LISTAR EVALUACIONES
      * =====================================================
      *
      * GET /evaluaciones/listar
      */
     @GetMapping("/listar")
-    public String listar(Model model) {
-    	 /*
-         * Model permite enviar datos
-         * desde el Controller hacia Thymeleaf.
-         *
-         * Conceptualmente reemplaza:
-         *
-         * request.setAttribute(...)
-         */
+    public String listar(
+            Model model) {
+
+
 
         /*
-         * Enviamos el ArrayList
-         * hacia la vista Thymeleaf.
+         * =================================================
+         * LISTA DE EVALUACIONES
+         * =================================================
+         *
+         * CLASE 1:
+         *
+         * model.addAttribute(
+         *     "listaEvaluaciones",
+         *     listaEvaluaciones
+         * );
+         *
+         *
+         * CLASE 2:
+         *
+         * Los datos ya no vienen
+         * desde un ArrayList.
+         *
+         * Ahora:
+         *
+         * EvaluacionController
+         *          ↓
+         * EvaluacionService
+         *          ↓
+         * EvaluacionRepository.findAll()
+         *          ↓
+         * MySQL
          */
-        model.addAttribute("listaEvaluaciones",listaEvaluaciones);
+        model.addAttribute(
+
+                "listaEvaluaciones",
+
+                evaluacionService.listar()
+
+        );
+
+
+
+        /*
+         * =================================================
+         * LISTA DE CURSOS
+         * =================================================
+         *
+         * También necesitamos enviar
+         * los cursos hacia la vista.
+         *
+         * Esto permitirá construir
+         * el SELECT del modal:
+         *
+         * Curso
+         *
+         * [ Java       ▼ ]
+         * [ Python       ]
+         * [ Spring Boot  ]
+         *
+         *
+         * Thymeleaf recibirá:
+         *
+         * listaCursos
+         */
+        model.addAttribute(
+
+                "listaCursos",
+
+                cursoService.listar()
+
+        );
+
 
 
         /*
          * Spring buscará:
          *
-         * templates/evaluaciones/lista.html
+         * src/main/resources/templates/
+         * evaluaciones/lista.html
          */
         return "evaluaciones/lista";
 
@@ -141,76 +310,279 @@ public class EvaluacionController {
      *
      * POST /evaluaciones/guardar
      *
-     * Este único método se encargará
-     * de crear y actualizar.
+     *
+     * Este mismo método servirá para:
+     *
+     * CREATE
+     *
+     * y
+     *
+     * UPDATE.
+     *
+     *
+     * Nuestro formulario enviará:
+     *
+     * id
+     *
+     * nombre
+     *
+     * ponderacion
+     *
+     * cursoId
      */
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute Evaluacion evaluacion) {
-    	/*
-         * @ModelAttribute toma los parámetros
-         * enviados por el formulario:
-         *
-         * id
-         * nombre
-         * estudiante
-         * curso
-         * nota
-         *
-         * y crea automáticamente
-         * un objeto Evaluacion.
-         */
+    public String guardar(
 
 
 
-        /*
-         * =================================================
-         * CREATE
-         * =================================================
-         *
-         * Si el ID es 0 significa que estamos
-         * creando una nueva evaluación.
-         */
-        if (evaluacion.getId() == 0) {
-            evaluacion.setId(siguienteId++);
-            
-            listaEvaluaciones.add(evaluacion);
-        }
-
-
-        /*
-         * =================================================
-         * UPDATE
-         * =================================================
-         *
-         * Si tiene un ID distinto de 0,
-         * significa que estamos editando.
-         */
-        else {
             /*
-             * Recorremos la lista utilizando
-             * su índice.
+             * =================================================
+             * ID
+             * =================================================
+             *
+             * Cuando creamos:
+             *
+             * id = 0
+             *
+             *
+             * Cuando editamos:
+             *
+             * id = ID existente.
+             *
+             *
+             * Ejemplo:
+             *
+             * id = 3
              */
-            for (int i = 0; i < listaEvaluaciones.size(); i++) {
-                Evaluacion evaluacionActual = listaEvaluaciones.get(i);
-                
-                if (evaluacionActual.getId() == evaluacion.getId()) {
+            @RequestParam
+            int id,
 
-                    /*
-                     * Reemplazamos la evaluación
-                     * anterior por la nueva versión.
-                     */
-                    listaEvaluaciones.set(
-                            i,
-                            evaluacion
-                    );
 
-                    break;
-                }
-            }
+
+            /*
+             * Nombre de la evaluación.
+             *
+             * Ejemplo:
+             *
+             * Prueba 1
+             */
+            @RequestParam
+            String nombre,
+
+
+
+            /*
+             * Porcentaje correspondiente
+             * a la evaluación.
+             *
+             * Ejemplo:
+             *
+             * 30
+             *
+             * significa:
+             *
+             * 30%
+             */
+            @RequestParam
+            double ponderacion,
+
+
+
+            /*
+             * ID del curso seleccionado
+             * desde el <select>.
+             *
+             * Ejemplo:
+             *
+             * cursoId = 2
+             *
+             *
+             * EvaluacionService utilizará
+             * este ID para recuperar
+             * la entidad Curso.
+             */
+            @RequestParam
+            int cursoId,
+
+
+
+            /*
+             * RedirectAttributes permite
+             * enviar información después
+             * de realizar un redirect.
+             *
+             * Lo utilizaremos para:
+             *
+             * tipoMensaje
+             *
+             * mensaje
+             *
+             * que posteriormente serán
+             * mostrados utilizando SweetAlert2.
+             */
+            RedirectAttributes
+            redirectAttributes) {
+
+
+        try {
+
+
+
+            /*
+             * =================================================
+             * DETERMINAR CREATE / UPDATE
+             * =================================================
+             *
+             * Guardamos esta información
+             * ANTES de persistir.
+             *
+             *
+             * id == 0
+             *
+             *      ↓
+             *
+             * Nueva evaluación.
+             */
+            boolean nueva =
+                    id == 0;
+
+
+
+            /*
+             * =================================================
+             * GUARDAR
+             * =================================================
+             *
+             * El Controller NO realiza
+             * las validaciones de negocio.
+             *
+             * Simplemente entrega los datos
+             * al Service.
+             */
+            evaluacionService.guardar(
+
+                    id,
+
+                    nombre,
+
+                    ponderacion,
+
+                    cursoId
+
+            );
+
+
+
+            /*
+             * =================================================
+             * MENSAJE DE ÉXITO
+             * =================================================
+             *
+             * SweetAlert2 recibirá:
+             *
+             * icon = success
+             */
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "tipoMensaje",
+
+                    "success"
+
+                );
+
+
+
+            /*
+             * El mensaje dependerá
+             * de la operación realizada.
+             */
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "mensaje",
+
+                    nueva
+
+                    ? "Evaluación registrada correctamente."
+
+                    : "Evaluación actualizada correctamente."
+
+                );
+
         }
 
+
+
         /*
-         * Después de guardar o actualizar
+         * =====================================================
+         * ERROR DE REGLA DE NEGOCIO
+         * =====================================================
+         *
+         * EvaluacionService puede lanzar:
+         *
+         * ReglaNegocioException
+         *
+         *
+         * Por ejemplo:
+         *
+         * - nombre vacío;
+         *
+         * - curso inexistente;
+         *
+         * - evaluación duplicada;
+         *
+         * - ponderación inválida;
+         *
+         * - suma de ponderaciones
+         *   superior al 100%.
+         */
+        catch (ReglaNegocioException e) {
+
+
+
+            /*
+             * SweetAlert2 mostrará
+             * el icono de error.
+             */
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "tipoMensaje",
+
+                    "error"
+
+                );
+
+
+
+            /*
+             * Recuperamos directamente
+             * el mensaje generado
+             * desde el Service.
+             *
+             *
+             * Ejemplo:
+             *
+             * "La suma de las ponderaciones
+             * del curso no puede superar
+             * el 100%."
+             */
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "mensaje",
+
+                    e.getMessage()
+
+                );
+
+        }
+
+
+
+        /*
+         * Después de guardar
          * regresamos al listado.
          */
         return "redirect:/evaluaciones/listar";
@@ -221,34 +593,154 @@ public class EvaluacionController {
 
     /*
      * =====================================================
-     * DELETE
+     * DELETE - ELIMINAR EVALUACIÓN
      * =====================================================
      *
-     * POST /evaluaciones/eliminar/2
+     * POST /evaluaciones/eliminar/3
      *
-     * De momento usamos POST porque
-     * estamos trabajando con formularios HTML.
+     *
+     * Seguimos utilizando POST
+     * porque en esta Clase 2 todavía
+     * trabajamos con formularios HTML.
+     *
+     *
+     * Más adelante con REST podremos tener:
+     *
+     * DELETE /api/evaluaciones/3
      */
     @PostMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable int id) {
-    	/*
-         * @PathVariable captura el ID
-         * que viene desde la URL.
-         */
+    public String eliminar(
+
+
+
+            /*
+             * @PathVariable
+             *
+             * obtiene el ID directamente
+             * desde la URL.
+             *
+             *
+             * Ejemplo:
+             *
+             * /evaluaciones/eliminar/3
+             *
+             *      ↓
+             *
+             * id = 3
+             */
+            @PathVariable
+            int id,
+
+
+
+            /*
+             * Lo utilizamos nuevamente
+             * para enviar los mensajes
+             * hacia SweetAlert2.
+             */
+            RedirectAttributes
+            redirectAttributes) {
+
+
+        try {
+
+
+
+            /*
+             * =================================================
+             * ELIMINAR
+             * =================================================
+             *
+             * El Controller NO ejecuta:
+             *
+             * repository.deleteById()
+             *
+             *
+             * Tampoco utiliza:
+             *
+             * listaEvaluaciones.removeIf()
+             *
+             *
+             * Entrega la responsabilidad
+             * al Service.
+             */
+            evaluacionService.eliminar(
+                    id
+            );
+
+
+
+            /*
+             * Si no ocurrió una excepción,
+             * significa que fue eliminada.
+             */
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "tipoMensaje",
+
+                    "success"
+
+                );
+
+
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "mensaje",
+
+                    "Evaluación eliminada correctamente."
+
+                );
+
+        }
+
+
 
         /*
-         * Eliminamos la evaluación
-         * cuyo ID coincida.
+         * =====================================================
+         * ERROR
+         * =====================================================
+         *
+         * Actualmente puede ocurrir:
+         *
+         * - evaluación inexistente.
+         *
+         *
+         * Más adelante, cuando tengamos
+         * CalificacionRepository:
+         *
+         * - evaluación con calificaciones
+         *   registradas.
          */
-        listaEvaluaciones.removeIf(
-            evaluacion ->
-                evaluacion.getId() == id
-        );
+        catch (ReglaNegocioException e) {
 
 
-        /*
-         * Volvemos al listado.
-         */
+
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "tipoMensaje",
+
+                    "error"
+
+                );
+
+
+
+            redirectAttributes
+                .addFlashAttribute(
+
+                    "mensaje",
+
+                    e.getMessage()
+
+                );
+
+        }
+
+
+
         return "redirect:/evaluaciones/listar";
 
     }

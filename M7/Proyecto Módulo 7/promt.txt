@@ -1,0 +1,355 @@
+Actúa como un **desarrollador Frontend Senior y diseñador UI/UX con más de 10 años de experiencia**, especializado en la creación de portafolios profesionales para desarrolladores de software.
+
+Actualmente estoy construyendo mi **portafolio web profesional como Desarrollador Full Stack** y necesito que generes una base completa, moderna y profesional utilizando:
+
+* HTML5
+* CSS3
+* Bootstrap 5
+* JavaScript Vanilla
+
+Utiliza la **imagen de referencia que adjunto** como inspiración principal para el diseño, respetando su estructura visual, distribución, estilo, jerarquía y concepto general, pero mejorándolo para obtener un resultado profesional, moderno y atractivo.
+
+### Requisitos principales
+
+El sitio debe ser **100% responsivo**, adaptándose correctamente a:
+
+* Computadores de escritorio
+* Notebook
+* Tablet
+* Teléfonos móviles
+
+Utiliza correctamente el sistema Grid, Flexbox y los breakpoints de Bootstrap.
+
+### Diseño
+
+Quiero un diseño:
+
+* Moderno
+* Profesional
+* Elegante
+* Tecnológico
+* Minimalista
+* Visualmente atractivo
+* Adecuado para un desarrollador Full Stack
+* Con buena jerarquía visual
+* Con espacios correctamente distribuidos
+* Con tipografías profesionales
+* Con animaciones y transiciones sutiles
+
+Evita diseños demasiado genéricos o similares a una plantilla gratuita básica.
+
+### Estructura del portafolio
+
+Incluye como mínimo las siguientes secciones:
+
+1. **Navbar**
+
+   * Logo o nombre profesional
+   * Inicio
+   * Sobre mí
+   * Habilidades
+   * Experiencia
+   * Proyectos
+   * Formación
+   * Contacto
+   * Menú hamburguesa responsivo para móviles
+
+2. **Hero / Inicio**
+
+   * Nombre
+   * Cargo: Full Stack Developer
+   * Breve presentación profesional
+   * Fotografía o espacio preparado para fotografía
+   * Botón “Ver proyectos”
+   * Botón “Descargar CV”
+   * Botón o enlace de contacto
+   * Iconos de GitHub y LinkedIn
+
+3. **Sobre mí**
+
+   * Presentación profesional
+   * Experiencia
+   * Especialización
+   * Objetivos profesionales
+
+4. **Tecnologías y habilidades**
+   Mostrar visualmente tecnologías como:
+
+   * HTML
+   * CSS
+   * JavaScript
+   * Bootstrap
+   * Java
+   * Spring Boot
+   * Python
+   * Django
+   * Angular
+   * MySQL
+   * Git
+   * GitHub
+
+   Puedes utilizar iconos, tarjetas, badges o elementos visuales modernos.
+
+5. **Experiencia profesional**
+   Crear una sección mediante timeline o cards donde posteriormente pueda agregar:
+
+   * Empresas
+   * Cargos
+   * Fechas
+   * Funciones
+   * Tecnologías utilizadas
+
+6. **Proyectos**
+   Crear cards modernas para mostrar proyectos incluyendo:
+
+   * Imagen
+   * Nombre del proyecto
+   * Descripción
+   * Tecnologías utilizadas
+   * Botón “Ver proyecto”
+   * Botón “GitHub”
+
+   Las cards deben tener efectos hover elegantes y mantener una buena visualización en dispositivos móviles.
+
+7. **Formación / Educación**
+   Espacio para agregar:
+
+   * Estudios
+   * Cursos
+   * Certificaciones
+   * Bootcamps
+   * Formación complementaria
+
+8. **Contacto**
+
+   * Nombre
+   * Correo
+   * Asunto
+   * Mensaje
+   * Botón enviar
+   * Enlaces a GitHub y LinkedIn
+
+9. **Footer**
+
+   * Nombre
+   * Copyright
+   * Redes profesionales
+   * Botón para volver arriba
+
+### Funcionalidades JavaScript
+
+Incluye:
+
+* Scroll suave entre secciones
+* Navbar que cambie visualmente al hacer scroll
+* Indicador de sección activa
+* Botón “volver arriba”
+* Animaciones suaves al aparecer contenido
+* Menú móvil completamente funcional
+* Cierre automático del menú móvil al seleccionar una sección
+* Validación básica del formulario
+* Efectos visuales discretos
+* Código organizado y fácil de modificar
+
+### UI/UX
+
+Aplica buenas prácticas de experiencia de usuario:
+
+* Contraste adecuado
+* Tamaños de texto legibles
+* Botones claramente identificables
+* Espaciado consistente
+* Navegación sencilla
+* Diseño limpio
+* Excelente visualización en dispositivos móviles
+* Correcta jerarquía visual
+* Estados hover y focus en enlaces y botones
+* Experiencia coherente en distintas resoluciones
+
+### Accesibilidad
+
+Implementa buenas prácticas básicas:
+
+* HTML semántico
+* Etiquetas `alt` en imágenes
+* Labels correctamente asociados a formularios
+* Navegación mediante teclado
+* Buen contraste de colores
+* Estados `focus` visibles
+* Uso apropiado de atributos ARIA cuando corresponda
+
+### SEO
+
+Incluye:
+
+* `title` optimizado
+* Meta description
+* Meta viewport
+* Open Graph básico
+* Estructura correcta de encabezados H1, H2 y H3
+* HTML semántico
+* Preparación para favicon
+
+### Rendimiento
+
+Optimiza el proyecto para:
+
+* Carga rápida
+* Código CSS organizado
+* JavaScript sin código innecesario
+* Imágenes preparadas para optimización
+* Uso eficiente de Bootstrap
+* Evitar dependencias innecesarias
+* Evitar archivos o librerías que no sean realmente necesarias
+
+### Organización del proyecto
+
+Entrega el proyecto utilizando obligatoriamente la siguiente estructura:
+
+```text
+portfolio/
+│
+├── index.html
+│
+├── README.md
+│
+├── assets/
+│   │
+│   ├── css/
+│   │   └── style.css
+│   │
+│   ├── js/
+│   │   └── script.js
+│   │
+│   └── img/
+│       │
+│       ├── perfil/
+│       │   └── perfil.jpg
+│       │
+│       ├── proyectos/
+│       │   ├── proyecto-1.jpg
+│       │   ├── proyecto-2.jpg
+│       │   └── proyecto-3.jpg
+│       │
+│       └── icons/
+│
+└── favicon.ico
+```
+
+Todos los recursos del sitio deben estar organizados dentro de la carpeta `assets`.
+
+Por ejemplo:
+
+```html
+<link rel="stylesheet" href="assets/css/style.css">
+
+<script src="assets/js/script.js"></script>
+
+<img src="assets/img/perfil/perfil.jpg" alt="Fotografía profesional">
+```
+
+No coloques todo el CSS y JavaScript dentro del archivo HTML.
+
+Mantén correctamente separados:
+
+* HTML
+* CSS
+* JavaScript
+* Imágenes y recursos visuales
+
+### Calidad del código
+
+El código debe ser:
+
+* Limpio
+* Profesional
+* Semántico
+* Ordenado
+* Escalable
+* Comentado solo cuando sea necesario
+* Fácil de mantener
+* Fácil de personalizar posteriormente
+* Sin código duplicado innecesario
+
+Utiliza variables CSS mediante `:root` para definir:
+
+* Colores principales
+* Colores secundarios
+* Tipografías
+* Espaciados
+* Sombras
+* Bordes
+* Transiciones
+
+De esta manera debe ser fácil modificar posteriormente la identidad visual completa del sitio.
+
+### Responsive Design
+
+Presta especial atención al comportamiento responsivo.
+
+Verifica específicamente:
+
+* Navbar en móvil
+* Hero en pantallas pequeñas
+* Tamaño de la fotografía
+* Botones en móvil
+* Cards de proyectos
+* Timeline de experiencia
+* Tecnologías
+* Formulario de contacto
+* Footer
+
+En teléfonos móviles:
+
+* Evita textos demasiado grandes.
+* Los botones deben reorganizarse cuando sea necesario.
+* Las cards deben ocupar correctamente el ancho disponible.
+* No debe existir scroll horizontal.
+* Las imágenes nunca deben salirse de sus contenedores.
+* El menú debe convertirse correctamente en menú hamburguesa.
+
+Utiliza media queries adicionales cuando Bootstrap no sea suficiente.
+
+### Contenido de ejemplo
+
+No utilices textos genéricos como:
+
+`Lorem ipsum`
+
+Utiliza contenido de ejemplo realista para un perfil profesional de **Desarrollador Full Stack Java**, de manera que pueda visualizar cómo quedará el portafolio terminado.
+
+Los textos deben ser posteriormente fáciles de reemplazar.
+
+### README
+
+Incluye también un archivo `README.md` con:
+
+* Nombre del proyecto
+* Descripción breve
+* Tecnologías utilizadas
+* Estructura de carpetas
+* Instrucciones para ejecutar el proyecto
+* Instrucciones para modificar textos e imágenes principales
+
+### Importante
+
+No quiero únicamente un ejemplo visual.
+
+Quiero un **proyecto frontend completamente funcional**, que pueda abrir directamente en Visual Studio Code y ejecutar mediante Live Server.
+
+Genera todos los archivos necesarios y entrega finalmente el proyecto en un **archivo ZIP descargable**, manteniendo correctamente la estructura de carpetas.
+
+Antes de entregarlo:
+
+1. Revisa que no existan errores de HTML, CSS o JavaScript.
+2. Comprueba que todas las rutas a CSS, JS e imágenes sean correctas.
+3. Comprueba que el menú responsivo funcione correctamente.
+4. Comprueba la visualización en desktop, notebook, tablet y móvil.
+5. Verifica que no haya elementos desbordándose horizontalmente.
+6. Asegúrate de que el diseño mantenga una apariencia profesional en todas las resoluciones.
+7. Comprueba que todos los botones y enlaces internos funcionen.
+8. Utiliza contenido de ejemplo realista relacionado con un perfil de Desarrollador Full Stack.
+9. Mantén el código preparado para reemplazar fácilmente textos, imágenes, tecnologías, proyectos y enlaces.
+10. Si alguna parte del diseño de referencia puede mejorarse desde el punto de vista de UI/UX, realiza la mejora sin perder la identidad visual principal de la referencia.
+11. Prioriza una apariencia profesional que pueda ser utilizada posteriormente para postular a cargos de desarrollo de software.
+12. Entrega el proyecto completo y funcional, no solamente fragmentos de código.

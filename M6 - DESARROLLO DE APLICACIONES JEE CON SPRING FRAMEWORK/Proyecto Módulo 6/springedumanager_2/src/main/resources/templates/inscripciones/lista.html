@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+
+      th:replace="~{layout/base :: layout(
+            'Inscripciones',
+            ~{::contenido},
+            ~{::scripts}
+      )}">
+
+
+<body>
+
+
+
+<div th:fragment="contenido">
+
+
+    <!-- ================================================= -->
+    <!-- ENCABEZADO                                        -->
+    <!-- ================================================= -->
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-5">
+
+
+        <div>
+
+
+            <h1>
+                Inscripciones
+            </h1>
+
+
+            <p class="text-muted">
+
+                Gestión de estudiantes
+                inscritos en los cursos.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!--
+            Abre el modal para realizar
+            una nueva inscripción.
+        -->
+        <button
+
+            type="button"
+
+            class="btn btn-success"
+
+            data-bs-toggle="modal"
+
+            data-bs-target="#modalInscripcion"
+
+            onclick="nuevaInscripcion()">
+
+
+            <i class="fa-solid fa-plus"></i>
+
+            Nueva Inscripción
+
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- TABLA                                             -->
+    <!-- ================================================= -->
+
+    <div class="card shadow-sm">
+
+
+        <div class="card-body">
+
+
+            <table
+
+                id="tablaInscripciones"
+
+                class="table
+                       table-dark
+                       table-striped
+                       table-hover
+                       align-middle
+                       mb-0">
+
+
+                <thead>
+
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Estudiante</th>
+
+                        <th>Correo</th>
+
+                        <th>Curso</th>
+
+                        <th>Opciones</th>
+
+                    </tr>
+
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    <!--
+                        Recorremos:
+
+                        listaInscripciones
+
+                        enviada desde
+                        InscripcionController.
+                    -->
+                    <tr
+                        th:each="inscripcion :
+                                 ${listaInscripciones}">
+
+
+                        <!-- ID -->
+                        <td
+                            th:text="${inscripcion.id}">
+                        </td>
+
+
+
+                        <!--
+                            Inscripcion
+                                ↓
+                            estudiante
+                                ↓
+                            nombre
+                        -->
+                        <td
+                            th:text="${inscripcion.estudiante.nombre}">
+                        </td>
+
+
+
+                        <!--
+                            Mostramos también el correo
+                            para identificar mejor
+                            al estudiante.
+                        -->
+                        <td
+                            th:text="${inscripcion.estudiante.email}">
+                        </td>
+
+
+
+                        <!--
+                            Inscripcion
+                                ↓
+                            curso
+                                ↓
+                            nombre
+                        -->
+                        <td
+                            th:text="${inscripcion.curso.nombre}">
+                        </td>
+
+
+
+                        <td>
+
+
+                            <!--
+                                No agregamos EDITAR.
+
+                                Una inscripción se crea
+                                o se elimina.
+
+                                Esto evita modificar
+                                arbitrariamente:
+                                
+                                estudiante
+                                curso
+
+                                sobre una inscripción
+                                que posteriormente puede
+                                tener calificaciones.
+                            -->
+
+
+                            <!-- ELIMINAR -->
+                            <form
+
+                                th:action="@{/inscripciones/eliminar/{id}(id=${inscripcion.id})}"
+
+                                method="post"
+
+                                class="d-inline form-eliminar">
+
+
+                                <button
+
+                                    type="submit"
+
+                                    class="btn btn-link
+                                           text-danger
+                                           p-0"
+
+                                    title="Eliminar inscripción">
+
+
+                                    <i class="fa-solid fa-trash"></i>
+
+
+                                </button>
+
+
+                            </form>
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- MODAL NUEVA INSCRIPCIÓN                           -->
+    <!-- ================================================= -->
+
+    <div
+
+        class="modal fade"
+
+        id="modalInscripcion"
+
+        tabindex="-1"
+
+        aria-labelledby="tituloModalInscripcion"
+
+        aria-hidden="true">
+
+
+        <div class="modal-dialog">
+
+
+            <div class="modal-content">
+
+
+
+                <!-- CABECERA -->
+                <div class="modal-header">
+
+
+                    <h5
+
+                        class="modal-title"
+
+                        id="tituloModalInscripcion">
+
+
+                        Nueva Inscripción
+
+
+                    </h5>
+
+
+                    <button
+
+                        type="button"
+
+                        class="btn-close"
+
+                        data-bs-dismiss="modal"
+
+                        aria-label="Cerrar">
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- ===================================== -->
+                <!-- FORMULARIO                            -->
+                <!-- ===================================== -->
+
+                <form
+
+                    th:action="@{/inscripciones/guardar}"
+
+                    method="post">
+
+
+
+                    <div class="modal-body">
+
+
+
+                        <!-- ============================= -->
+                        <!-- ESTUDIANTE                    -->
+                        <!-- ============================= -->
+
+                        <div class="mb-3">
+
+
+                            <label
+
+                                for="estudianteInscripcion"
+
+                                class="form-label">
+
+
+                                Estudiante
+
+
+                            </label>
+
+
+
+                            <select
+
+                                id="estudianteInscripcion"
+
+                                name="estudianteId"
+
+                                class="form-select"
+
+                                required>
+
+
+
+                                <option value="">
+
+                                    Seleccione un estudiante
+
+                                </option>
+
+
+
+                                <!--
+                                    El usuario verá
+                                    el nombre.
+
+                                    El backend recibirá
+                                    estudiante.id.
+                                -->
+                                <option
+
+                                    th:each="estudiante :
+                                             ${listaEstudiantes}"
+
+                                    th:value="${estudiante.id}"
+
+                                    th:text="${estudiante.nombre
+                                        + ' - '
+                                        + estudiante.email}">
+
+
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+
+                        <!-- ============================= -->
+                        <!-- CURSO                         -->
+                        <!-- ============================= -->
+
+                        <div class="mb-3">
+
+
+                            <label
+
+                                for="cursoInscripcion"
+
+                                class="form-label">
+
+
+                                Curso
+
+
+                            </label>
+
+
+
+                            <select
+
+                                id="cursoInscripcion"
+
+                                name="cursoId"
+
+                                class="form-select"
+
+                                required>
+
+
+
+                                <option value="">
+
+                                    Seleccione un curso
+
+                                </option>
+
+
+
+                                <option
+
+                                    th:each="curso :
+                                             ${listaCursos}"
+
+                                    th:value="${curso.id}"
+
+                                    th:text="${curso.nombre}">
+
+
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- PIE DEL MODAL -->
+                    <div class="modal-footer">
+
+
+                        <button
+
+                            type="button"
+
+                            class="btn btn-secondary"
+
+                            data-bs-dismiss="modal">
+
+
+                            Cancelar
+
+
+                        </button>
+
+
+
+                        <button
+
+                            type="submit"
+
+                            class="btn btn-primary">
+
+
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            Inscribir
+
+
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- SCRIPTS                                           -->
+<!-- ================================================= -->
+
+<th:block th:fragment="scripts">
+
+
+    <script
+        th:src="@{/js/inscripciones/inscripciones.js}">
+    </script>
+
+
+</th:block>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio | Full Stack Python Developer</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-bs-spy="scroll" data-bs-target="#main-nav" data-bs-offset="70">
+
+    <!-- Navbar -->
+    <nav id="main-nav" class="navbar navbar-expand-lg navbar-dark fixed-top transition-all">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white d-flex align-items-center gap-2" href="#inicio">
+                <div class="rounded-circle bg-primary" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-code text-dark" style="font-size: 0.7rem;"></i>
+                </div>
+                CodeCraft
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#proyectos">Proyectos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#sobre-mi">Sobre Mí</a></li>
+                    <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                        <a href="#contacto" class="btn btn-outline-primary btn-sm rounded-pill px-4 py-2 fw-bold">Hablemos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section d-flex align-items-center position-relative overflow-hidden">
+        <!-- Grid Background Pattern overlay -->
+        <div class="grid-bg position-absolute top-0 start-0 w-100 h-100" style="opacity: 0.03; z-index: 0; background-image: linear-gradient(var(--border-dark) 1px, transparent 1px), linear-gradient(90deg, var(--border-dark) 1px, transparent 1px); background-size: 40px 40px;"></div>
+        
+        <div class="container mt-5 position-relative z-1">
+            <div class="row align-items-center min-vh-75">
+                <div class="col-lg-6 hero-content">
+                    <div class="subtitle-badge mb-4">
+                        <span class="text-primary me-2 fw-bold">{" "} </span> ¡Hola!
+                    </div>
+                    <h1 class="display-4 fw-bold mb-3 text-white lh-sm">
+                        Soy <span class="text-primary">Alex</span>,<br>
+                        Desarrollador Full Stack<br>y Mentor.
+                    </h1>
+                    <p class="lead mb-5 text-gray" style="max-width: 90%;">
+                        Especialista en arquitecturas robustas con Python e interfaces dinámicas. Formando a la nueva generación de desarrolladores a través de bootcamps intensivos.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 mb-5">
+                        <a href="#proyectos" class="btn btn-primary rounded-pill px-4 py-2 fw-bold text-dark">Ver Trabajo</a>
+                        <a href="#" class="btn btn-outline-light rounded-pill px-4 py-2">Descargar CV</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 position-relative text-center d-none d-lg-block mt-5 mt-lg-0">
+                    <!-- Decoración visual: Círculo verde de fondo -->
+                    <div class="hero-image-bg bg-primary rounded-circle position-absolute top-50 start-50 translate-middle" style="width: 350px; height: 350px; opacity: 0.9; z-index: 0;"></div>
+                    
+                    <!-- Imagen de la persona (placeholder) -->
+                    <div class="position-relative z-1 d-flex justify-content-center align-items-end" style="height: 500px;">
+                        <!-- Reemplazar con tu foto sin fondo (.png) -->
+                        <img src="https://via.placeholder.com/400x500/111/00E676?text=Foto+Perfil+PNG" alt="Perfil" class="img-fluid border-bottom border-primary border-4" style="object-fit: cover;">
+                        
+                        <!-- Badges flotantes -->
+                        <div class="position-absolute bg-darker border border-dark rounded-pill px-3 py-2 text-white shadow-lg d-flex align-items-center gap-2" style="top: 25%; right: 5%;">
+                            <i class="fab fa-python text-primary"></i> <span class="small fw-bold">Python Dev</span>
+                        </div>
+                        <div class="position-absolute bg-darker border border-dark rounded-pill px-3 py-2 text-white shadow-lg d-flex align-items-center gap-2" style="bottom: 35%; left: 0;">
+                            <i class="fas fa-chalkboard-teacher text-primary"></i> <span class="small fw-bold">Instructor</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ticker / Marquee Banner -->
+    <div class="ticker-wrap bg-primary py-3">
+        <div class="ticker text-dark fw-bold text-uppercase fs-5">
+            <span class="mx-4"><i class="fas fa-asterisk text-dark me-2" style="font-size: 0.8rem;"></i> Backend Development</span>
+            <span class="mx-4"><i class="fas fa-asterisk text-dark me-2" style="font-size: 0.8rem;"></i> Frontend Development</span>
+            <span class="mx-4"><i class="fas fa-asterisk text-dark me-2" style="font-size: 0.8rem;"></i> APIs REST</span>
+            <span class="mx-4"><i class="fas fa-asterisk text-dark me-2" style="font-size: 0.8rem;"></i> Formación Tech</span>
+            <!-- Repetición para el efecto continuo -->
+            <span class="mx-4"><i class="fas fa-asterisk text-dark me-2" style="font-size: 0.8rem;"></i> Backend Development</span>
+            <span class="mx-4"><i class="fas fa-asterisk text-dark me-2" style="font-size: 0.8rem;"></i> Frontend Development</span>
+            <span class="mx-4"><i class="fas fa-asterisk text-dark me-2" style="font-size: 0.8rem;"></i> APIs REST</span>
+        </div>
+    </div>
+
+    <!-- Servicios Section -->
+    <section id="servicios" class="py-6 bg-darker position-relative">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
+                <div>
+                    <span class="text-gray small text-uppercase tracking-wide border-bottom border-primary pb-1">Mi Especialidad</span>
+                    <h2 class="display-6 fw-bold mt-3 text-white">Servicios que Ofrezco</h2>
+                </div>
+                <a href="#contacto" class="btn btn-primary rounded-pill mt-4 mt-md-0 px-4 fw-bold text-dark d-inline-flex align-items-center gap-2">Ver Todos</a>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="service-card p-4 p-lg-5 rounded-4 bg-card h-100 transition-all border border-dark">
+                        <div class="icon-box bg-darker d-inline-flex p-3 rounded-3 mb-4">
+                            <i class="fab fa-python text-primary fs-4"></i>
+                        </div>
+                        <h4 class="fw-bold text-white mb-3 fs-5">Backend & APIs</h4>
+                        <p class="text-gray small mb-4 lh-lg">Desarrollo de arquitecturas escalables utilizando Django y Flask. Creación de APIs RESTful seguras y eficientes para soluciones empresariales.</p>
+                        <a href="#" class="text-gray text-decoration-none small fw-bold hover-primary transition-all">Saber más <i class="fas fa-arrow-right ms-2 text-primary"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card p-4 p-lg-5 rounded-4 bg-card h-100 transition-all border border-dark">
+                        <div class="icon-box bg-darker d-inline-flex p-3 rounded-3 mb-4">
+                            <i class="fab fa-react text-primary fs-4"></i>
+                        </div>
+                        <h4 class="fw-bold text-white mb-3 fs-5">Frontend Dinámico</h4>
+                        <p class="text-gray small mb-4 lh-lg">Integración de interfaces modernas y responsivas con JavaScript Vanilla y React, garantizando una excelente experiencia de usuario (UX/UI).</p>
+                        <a href="#" class="text-gray text-decoration-none small fw-bold hover-primary transition-all">Saber más <i class="fas fa-arrow-right ms-2 text-primary"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card p-4 p-lg-5 rounded-4 bg-card h-100 transition-all border border-dark">
+                        <div class="icon-box bg-darker d-inline-flex p-3 rounded-3 mb-4">
+                            <i class="fas fa-laptop-code text-primary fs-4"></i>
+                        </div>
+                        <h4 class="fw-bold text-white mb-3 fs-5">Instrucción & Mentoría</h4>
+                        <p class="text-gray small mb-4 lh-lg">Diseño y ejecución de programas de formación (Bootcamps), transmitiendo bases sólidas de programación y buenas prácticas a nuevos talentos.</p>
+                        <a href="#" class="text-gray text-decoration-none small fw-bold hover-primary transition-all">Saber más <i class="fas fa-arrow-right ms-2 text-primary"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Mí Section -->
+    <section id="sobre-mi" class="py-6 bg-main">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 text-center position-relative">
+                    <div class="bg-primary rounded-circle d-inline-block position-relative mx-auto" style="width: 320px; height: 320px;">
+                        <img src="https://via.placeholder.com/320x320/111/00E676?text=Foto+Circular" alt="Alex" class="rounded-circle w-100 h-100 position-relative z-1" style="object-fit: cover; opacity: 0.9;">
+                        
+                        <!-- Elementos de diseño flotantes -->
+                        <div class="badge bg-darker border border-dark position-absolute py-2 px-3 rounded-pill text-white shadow" style="top: 5%; left: -5%;">
+                            <span class="text-primary me-1 fw-bold">#</span> Django
+                        </div>
+                        <div class="badge bg-darker border border-dark position-absolute py-2 px-3 rounded-pill text-white shadow" style="bottom: 15%; right: -5%; z-index: 2;">
+                            <span class="text-primary me-1 fw-bold">#</span> PostgreSQL
+                        </div>
+                        <div class="badge bg-darker border border-dark position-absolute py-2 px-3 rounded-pill text-white shadow" style="bottom: 0%; left: 5%; z-index: 2;">
+                            <span class="text-primary me-1 fw-bold">#</span> Docker
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 ps-lg-5">
+                    <span class="text-gray small text-uppercase tracking-wide border-bottom border-primary pb-1">Sobre Mí</span>
+                    <h2 class="display-6 fw-bold mt-4 text-white mb-4">¿Quién es Alex?</h2>
+                    <p class="text-gray mb-4 lh-lg" style="font-size: 0.95rem;">
+                        Con un marcado pensamiento crítico, me dedico a construir software que resuelve problemas reales. Como desarrollador especializado en el ecosistema Python, integro lógica backend robusta con interfaces limpias. 
+                        Mi rol como instructor me exige mantener un estándar técnico riguroso, comunicar conceptos complejos con claridad y estar en constante actualización.
+                    </p>
+                    
+                    <div class="row mt-5 pt-3 g-4">
+                        <div class="col-4">
+                            <h3 class="fw-bold text-primary mb-1">50+</h3>
+                            <p class="text-gray small m-0 text-uppercase tracking-wide" style="font-size: 0.7rem;">Proyectos</p>
+                        </div>
+                        <div class="col-4 border-start border-dark ps-4">
+                            <h3 class="fw-bold text-primary mb-1">300+</h3>
+                            <p class="text-gray small m-0 text-uppercase tracking-wide" style="font-size: 0.7rem;">Alumnos</p>
+                        </div>
+                        <div class="col-4 border-start border-dark ps-4">
+                            <h3 class="fw-bold text-primary mb-1">5+</h3>
+                            <p class="text-gray small m-0 text-uppercase tracking-wide" style="font-size: 0.7rem;">Años Exp.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5">
+                        <a href="#" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold d-inline-flex align-items-center gap-2">
+                            Descargar CV <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Simple -->
+    <footer class="py-4 bg-darker border-top border-dark text-center">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="mb-2 mb-md-0 text-gray small">&copy; 2026 CodeCraft. Desarrollado con rigor técnico.</p>
+            <div class="social-links d-flex gap-3">
+                <a href="#" class="text-gray hover-primary transition-all fs-5"><i class="fab fa-github"></i></a>
+                <a href="#" class="text-gray hover-primary transition-all fs-5"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+/* ==========================================================================
+   Variables Globales y Reset
+   ========================================================================== */
+:root {
+    /* Colores base inspirados en el Dark Theme de la referencia */
+    --bg-main: #0B0F19;
+    --bg-darker: #06090F;
+    --bg-card: #131A2A;
+    
+    /* Acentos y gradientes */
+    --primary: #7C3AED;      /* Púrpura principal */
+    --primary-hover: #6D28D9;
+    --secondary: #9CA3AF;    /* Gris claro para textos */
+    --text-light: #F9FAFB;
+    
+    /* Variables estructurales */
+    --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+    --border-radius: 0.75rem;
+    --transition: all 0.3s ease;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-light);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   Utilidades y Tipografía
+   ========================================================================== */
+.py-6 { padding-top: 5rem; padding-bottom: 5rem; }
+.bg-darker { background-color: var(--bg-darker); }
+.text-gradient {
+    background: linear-gradient(135deg, #A78BFA, #7C3AED);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.bg-gradient-primary {
+    background: linear-gradient(90deg, #7C3AED, #4F46E5);
+}
+.badge-custom {
+    background-color: rgba(124, 58, 237, 0.1);
+    color: #A78BFA;
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    letter-spacing: 1px;
+}
+.transition-all { transition: var(--transition); }
+.hover-primary:hover { color: var(--primary) !important; }
+
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
+.navbar {
+    padding: 1.2rem 0;
+    background-color: transparent;
+    transition: background-color 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+}
+.navbar.scrolled {
+    background-color: rgba(6, 9, 15, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 0.8rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+.nav-link {
+    color: var(--text-light) !important;
+    font-weight: 500;
+    margin: 0 0.5rem;
+    position: relative;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary);
+    transition: var(--transition);
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Botón Primary */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero-section {
+    min-height: 100vh;
+    padding-top: 80px;
+}
+.code-card { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
+
+/* ==========================================================================
+    Proyectos (Cards)
+   ========================================================================== */
+.project-card { 
+    position: relative; 
+    overflow: hidden;
+    cursor: default;
+}
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background-color: transparent;
+    transition: var(--transition);
+}
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-color: rgba(124, 58, 237, 0.5) !important;
+}
+.project-card:hover::before { 
+    background-color: var(--primary); 
+}
+
+
+/* ==========================================================================
+   Botón Volver Arriba
+   ========================================================================== */
+#btn-back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    z-index: 99;
+}

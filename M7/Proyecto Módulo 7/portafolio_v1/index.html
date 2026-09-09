@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portafolio profesional de Desarrollador Full Stack Python e Instructor. Experiencia en creación de soluciones digitales y formación de talento.">
+    <meta property="og:title" content="Portafolio | Full Stack Developer">
+    <title>Mi Portafolio | Full Stack Python Developer</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-bs-spy="scroll" data-bs-target="#main-nav" data-bs-offset="70">
+
+    <!-- Navbar -->
+    <nav id="main-nav" class="navbar navbar-expand-lg navbar-dark fixed-top transition-all">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-gradient" href="#inicio">&lt;/&gt; CodeCraft</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#sobre-mi">Sobre mí</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#habilidades">Habilidades</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experiencia">Experiencia</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#proyectos">Proyectos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+                </ul>
+                <a href="#contacto" class="btn btn-primary ms-lg-3 mt-3 mt-lg-0 btn-hire">Contrátame</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <span class="badge badge-custom mb-3">DESARROLLADOR WEB & INSTRUCTOR</span>
+                    <h1 class="display-3 fw-bold mb-3">Hola, soy <span class="text-gradient">Ricardo</span></h1>
+                    <h2 class="h3 mb-4 text-light">Construyo soluciones digitales con Python y Java.</h2>
+                    <p class="lead mb-5 text-secondary">Especializado en arquitecturas backend robustas, interfaces dinámicas y en la formación de la próxima generación de desarrolladores a través de bootcamps intensivos.</p>
+                    
+                    <div class="hero-buttons d-flex gap-3 mb-5">
+                        <a href="#proyectos" class="btn btn-primary btn-lg"><i class="fas fa-eye me-2"></i>Ver Proyectos</a>
+                        <a href="#" class="btn btn-outline-light btn-lg"><i class="fas fa-download me-2"></i>Descargar CV</a>
+                    </div>
+                    
+                    <div class="tech-stack d-flex align-items-center gap-3">
+                        <span class="text-secondary small text-uppercase fw-bold">Stack Principal:</span>
+                        <i class="fab fa-python fs-3 text-light" title="Python"></i>
+                        <i class="fa-brands fa-java fs-3 text-light" title="Java"></i>
+                        <i class="fab fa-js fs-3 text-light" title="JavaScript"></i>
+                        <i class="fa-brands fa-angular fs-3 text-light" title="Angular"></i>
+                        <i class="fab fa-react fs-3 text-light" title="React"></i>
+                        <i class="fas fa-database fs-3 text-light" title="Bases de Datos"></i>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block position-relative">
+                    <!-- Decoración visual inspirada en la referencia -->
+                    <div class="code-card bg-darker p-4 rounded-4 shadow-lg border border-secondary border-opacity-25">
+                        <div class="d-flex gap-2 mb-3">
+                            <div class="circle bg-danger rounded-circle" style="width: 12px; height: 12px;"></div>
+                            <div class="circle bg-warning rounded-circle" style="width: 12px; height: 12px;"></div>
+                            <div class="circle bg-success rounded-circle" style="width: 12px; height: 12px;"></div>
+                        </div>
+                        <pre class="text-success m-0"><code>
+<span class="text-primary">class</span> <span class="text-warning">Developer</span>:
+    <span class="text-primary">def</span> <span class="text-info">__init__</span>(self):
+        self.name = <span class="text-success">"Ricardo"</span>
+        self.roles = [<span class="text-success">"Full Stack"</span>, <span class="text-success">"Instructor"</span>]
+        self.stack = [
+                        <span class="text-success">"Python"</span>, 
+                        <span class="text-success">"Django"</span>, 
+                        <span class="text-success">"Java"</span>,
+                        <span class="text-success">"Spring"</span>,
+                        <span class="text-success">"Spring Boot"</span>,
+                        <span class="text-success">"JS"</span>
+                    ]  
+
+    <span class="text-primary">def</span> <span class="text-info">innovate</span>(self):
+        <span class="text-primary">return</span> <span class="text-success">"Clean & Efficient Code"</span>
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section py-5 bg-darker border-top border-bottom border-secondary border-opacity-25">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <h3 class="display-5 fw-bold text-gradient mb-0">5+</h3>
+                        <p class="text-secondary m-0">Años Experiencia</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <h3 class="display-5 fw-bold text-gradient mb-0">50+</h3>
+                        <p class="text-secondary m-0">Proyectos</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <h3 class="display-5 fw-bold text-gradient mb-0">300+</h3>
+                        <p class="text-secondary m-0">Alumnos Formados</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <h3 class="display-5 fw-bold text-gradient mb-0">100%</h3>
+                        <p class="text-secondary m-0">Compromiso</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Habilidades / Skills -->
+    <section id="habilidades" class="py-6">
+        <div class="container">
+            <div class="section-title text-center mb-5">
+                <span class="text-primary fw-bold text-uppercase tracking-wide">Mis Habilidades</span>
+                <h2 class="display-6 fw-bold mt-2">Tecnologías que Domino</h2>
+            </div>
+            
+            <div class="row g-5">
+                <!-- Skill Column 1 -->
+                <div class="col-md-6">
+                    <div class="skill-box mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold"><i class="fab fa-python me-2 text-primary"></i>Python / Django</span>
+                            <span class="text-secondary">95%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="skill-box mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold"><i class="fab fa-js me-2 text-warning"></i>JavaScript (ES6+)</span>
+                            <span class="text-secondary">90%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="skill-box mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold"><i class="fab fa-html5 me-2 text-danger"></i>HTML5 & CSS3</span>
+                            <span class="text-secondary">95%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Skill Column 2 -->
+                <div class="col-md-6">
+                    <div class="skill-box mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold"><i class="fab fa-bootstrap me-2 text-purple"></i>Bootstrap & Tailwind</span>
+                            <span class="text-secondary">85%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="skill-box mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold"><i class="fas fa-database me-2 text-success"></i>SQL / PostgreSQL</span>
+                            <span class="text-secondary">88%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: 88%;" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="skill-box mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold"><i class="fab fa-git-alt me-2 text-orange"></i>Git & GitHub</span>
+                            <span class="text-secondary">92%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyectos -->
+    <section id="proyectos" class="py-6 bg-darker">
+        <div class="container">
+            <div class="section-title text-center mb-5">
+                <span class="text-primary fw-bold text-uppercase tracking-wide">Portafolio</span>
+                <h2 class="display-6 fw-bold mt-2">Mis Trabajos Recientes</h2>
+            </div>
+
+            <div class="row g-4">
+                <!-- Proyecto 1 -->
+                <div class="col-md-4">
+                    <div class="project-card rounded-4 bg-card h-100 transition-all border border-dark">
+                        <!-- Reemplazar src por la ruta real cuando tengas la imagen -->
+                        <div class="card-img-wrapper" style="height: 200px; background: #1a1a2e;">
+                        <!-- <img src="assets/img/proyectos/proyecto-1.jpg" class="card-img-top" alt="Plataforma E-commerce"> -->
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold">Plataforma LMS</h5>
+                            <p class="card-text text-secondary small">Sistema de gestión de aprendizaje desarrollado para bootcamps, con control de asistencia, entrega de tareas y métricas en tiempo real.</p>
+                            <div class="mb-3">
+                                <span class="badge bg-secondary bg-opacity-25 text-light me-1">Django</span>
+                                <span class="badge bg-secondary bg-opacity-25 text-light me-1">PostgreSQL</span>
+                                <span class="badge bg-secondary bg-opacity-25 text-light">Bootstrap 5</span>
+                            </div>
+                            <div class="d-flex gap-2 mt-auto">
+                                <a href="#" class="btn btn-sm btn-outline-primary flex-grow-1">Ver Proyecto</a>
+                                <a href="#" class="btn btn-sm btn-outline-light"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proyecto 2 -->
+                <div class="col-md-4">
+                    <div class="project-card rounded-4 bg-card h-100 transition-all border border-dark">
+                        <!-- Reemplazar src por la ruta real cuando tengas la imagen -->
+                        <div class="card-img-wrapper" style="height: 200px; background: #1a1a2e;">
+                        <!-- <img src="assets/img/proyectos/proyecto-1.jpg" class="card-img-top" alt="Plataforma E-commerce"> -->
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold">Plataforma LMS</h5>
+                            <p class="card-text text-secondary small">Sistema de gestión de aprendizaje desarrollado para bootcamps, con control de asistencia, entrega de tareas y métricas en tiempo real.</p>
+                            <div class="mb-3">
+                                <span class="badge bg-secondary bg-opacity-25 text-light me-1">Django</span>
+                                <span class="badge bg-secondary bg-opacity-25 text-light me-1">PostgreSQL</span>
+                                <span class="badge bg-secondary bg-opacity-25 text-light">Bootstrap 5</span>
+                            </div>
+                            <div class="d-flex gap-2 mt-auto">
+                                <a href="#" class="btn btn-sm btn-outline-primary flex-grow-1">Ver Proyecto</a>
+                                <a href="#" class="btn btn-sm btn-outline-light"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Proyecto 3 -->
+                <div class="col-md-4">
+                    <div class="project-card rounded-4 bg-card h-100 transition-all border border-dark">
+                        <!-- Reemplazar src por la ruta real cuando tengas la imagen -->
+                        <div class="card-img-wrapper" style="height: 200px; background: #1a1a2e;">
+                        <!-- <img src="assets/img/proyectos/proyecto-1.jpg" class="card-img-top" alt="Plataforma E-commerce"> -->
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold">Plataforma LMS</h5>
+                            <p class="card-text text-secondary small">Sistema de gestión de aprendizaje desarrollado para bootcamps, con control de asistencia, entrega de tareas y métricas en tiempo real.</p>
+                            <div class="mb-3">
+                                <span class="badge bg-secondary bg-opacity-25 text-light me-1">Django</span>
+                                <span class="badge bg-secondary bg-opacity-25 text-light me-1">PostgreSQL</span>
+                                <span class="badge bg-secondary bg-opacity-25 text-light">Bootstrap 5</span>
+                            </div>
+                            <div class="d-flex gap-2 mt-auto">
+                                <a href="#" class="btn btn-sm btn-outline-primary flex-grow-1">Ver Proyecto</a>
+                                <a href="#" class="btn btn-sm btn-outline-light"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 border-top border-secondary border-opacity-25 text-center">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="mb-2 mb-md-0 text-secondary">&copy; 2026 CodeCraft. Todos los derechos reservados.</p>
+            <div class="social-links d-flex gap-3">
+                <a href="#" class="text-light fs-5 hover-primary transition-all"><i class="fab fa-github"></i></a>
+                <a href="#" class="text-light fs-5 hover-primary transition-all"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="text-light fs-5 hover-primary transition-all"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <button id="btn-back-to-top" class="btn btn-primary btn-floating shadow" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap & JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
